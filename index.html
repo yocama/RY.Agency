@@ -277,78 +277,257 @@
                         <p>All of Oklahoma</p>
                     </div>
                 </div>
-                <form class="contact-form quote-form" id="quoteForm">
+                <div class="quote-form-container" id="quoteFormContainer">
                     <h3>Get Your Free Quote</h3>
-                    <p class="form-subtitle">Fill out the form below and we'll get back to you within 24 hours</p>
+                    <p class="form-subtitle">Select your insurance type(s) to get started</p>
 
-                    <div class="form-group">
-                        <label for="firstName">First Name *</label>
-                        <input type="text" id="firstName" name="firstName" placeholder="John" required>
-                    </div>
+                    <div class="quote-form-layout">
+                        <!-- Left Column: Insurance Type Selection -->
+                        <div class="quote-types-column">
+                            <p class="column-label">Select Insurance Type(s)</p>
+                            <div class="quote-type-buttons">
+                                <button type="button" class="quote-type-btn" data-type="auto">
+                                    <span class="quote-type-icon">🚗</span>
+                                    <span class="quote-type-label">Auto</span>
+                                </button>
+                                <button type="button" class="quote-type-btn" data-type="home">
+                                    <span class="quote-type-icon">🏠</span>
+                                    <span class="quote-type-label">Home</span>
+                                </button>
+                                <button type="button" class="quote-type-btn" data-type="life">
+                                    <span class="quote-type-icon">❤️</span>
+                                    <span class="quote-type-label">Life</span>
+                                </button>
+                                <button type="button" class="quote-type-btn" data-type="commercial">
+                                    <span class="quote-type-icon">💼</span>
+                                    <span class="quote-type-label">Business</span>
+                                </button>
+                                <button type="button" class="quote-type-btn" data-type="pet">
+                                    <span class="quote-type-icon">🐾</span>
+                                    <span class="quote-type-label">Pet</span>
+                                </button>
+                                <button type="button" class="quote-type-btn" data-type="other">
+                                    <span class="quote-type-icon">📋</span>
+                                    <span class="quote-type-label">Other</span>
+                                </button>
+                            </div>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="lastName">Last Name *</label>
-                        <input type="text" id="lastName" name="lastName" placeholder="Doe" required>
-                    </div>
+                        <!-- Right Column: Form Fields -->
+                        <div class="quote-form-column">
+                            <form class="quote-form" id="quoteForm">
+                                <!-- Base Info Section - Always visible once type selected -->
+                                <div class="form-section base-info-section" id="baseInfoSection" style="display: none;">
+                                    <h4>Your Information</h4>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="firstName">First Name *</label>
+                                            <input type="text" id="firstName" name="firstName" placeholder="John" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="lastName">Last Name *</label>
+                                            <input type="text" id="lastName" name="lastName" placeholder="Doe" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="phone">Phone *</label>
+                                            <input type="tel" id="phone" name="phone" placeholder="(918) 555-0000" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="email">Email *</label>
+                                            <input type="email" id="email" name="email" placeholder="john@example.com" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="address">Address *</label>
+                                        <input type="text" id="address" name="address" placeholder="123 Main St, City, OK 12345" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="dob">Date of Birth *</label>
+                                        <input type="date" id="dob" name="dob" required>
+                                    </div>
+                                </div>
 
-                    <div class="form-group">
-                        <label for="email">Email *</label>
-                        <input type="email" id="email" name="email" placeholder="john@example.com" required>
-                    </div>
+                                <!-- Auto Insurance Section -->
+                                <div class="form-section type-section" id="autoSection" style="display: none;">
+                                    <h4>🚗 Auto Insurance Details</h4>
+                                    <div id="vehiclesList">
+                                        <div class="vehicle-entry" data-vehicle="1">
+                                            <p class="entry-label">Vehicle 1</p>
+                                            <div class="form-group">
+                                                <label>Enter vehicle info by:</label>
+                                                <div class="toggle-group">
+                                                    <button type="button" class="toggle-btn active" data-input="ymm" data-vehicle="1">Year/Make/Model</button>
+                                                    <button type="button" class="toggle-btn" data-input="vin" data-vehicle="1">VIN</button>
+                                                </div>
+                                            </div>
+                                            <div class="ymm-inputs" data-vehicle="1">
+                                                <div class="form-row three-col">
+                                                    <div class="form-group">
+                                                        <label>Year</label>
+                                                        <input type="text" name="vehicleYear1" placeholder="2024">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Make</label>
+                                                        <input type="text" name="vehicleMake1" placeholder="Toyota">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Model</label>
+                                                        <input type="text" name="vehicleModel1" placeholder="Camry">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="vin-input" data-vehicle="1" style="display: none;">
+                                                <div class="form-group">
+                                                    <label>VIN</label>
+                                                    <input type="text" name="vehicleVin1" placeholder="17-character VIN" maxlength="17">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="add-btn" id="addVehicleBtn">+ Add Another Vehicle</button>
 
-                    <div class="form-group">
-                        <label for="phone">Phone *</label>
-                        <input type="tel" id="phone" name="phone" placeholder="(918) 555-0000" required>
-                    </div>
+                                    <div id="driversList">
+                                        <div class="driver-entry" data-driver="1">
+                                            <p class="entry-label">Additional Driver 1 (optional)</p>
+                                            <div class="form-row">
+                                                <div class="form-group">
+                                                    <label>Name</label>
+                                                    <input type="text" name="driverName1" placeholder="Driver name">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Date of Birth</label>
+                                                    <input type="date" name="driverDob1">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="add-btn" id="addDriverBtn">+ Add Another Driver</button>
+                                </div>
 
-                    <div class="form-group">
-                        <label for="address">Address *</label>
-                        <input type="text" id="address" name="address" placeholder="123 Main St, City, OK 12345" required>
-                    </div>
+                                <!-- Home Insurance Section -->
+                                <div class="form-section type-section" id="homeSection" style="display: none;">
+                                    <h4>🏠 Home Insurance Details</h4>
+                                    <div class="form-group">
+                                        <label for="roofAge">Roof Age (years) *</label>
+                                        <input type="number" id="roofAge" name="roofAge" placeholder="e.g., 5" min="0" max="100">
+                                    </div>
+                                </div>
 
-                    <div class="form-group">
-                        <label>What type of insurance are you interested in? *</label>
-                        <div class="checkbox-group">
-                            <label class="checkbox-label">
-                                <input type="checkbox" name="insuranceTypes" value="auto">
-                                <span>Auto Insurance</span>
-                            </label>
-                            <label class="checkbox-label">
-                                <input type="checkbox" name="insuranceTypes" value="home">
-                                <span>Home Insurance</span>
-                            </label>
-                            <label class="checkbox-label">
-                                <input type="checkbox" name="insuranceTypes" value="life">
-                                <span>Life Insurance</span>
-                            </label>
-                            <label class="checkbox-label">
-                                <input type="checkbox" name="insuranceTypes" value="commercial">
-                                <span>Business Insurance</span>
-                            </label>
-                            <label class="checkbox-label">
-                                <input type="checkbox" name="insuranceTypes" value="pet">
-                                <span>Pet Insurance</span>
-                            </label>
-                            <label class="checkbox-label">
-                                <input type="checkbox" name="insuranceTypes" value="other">
-                                <span>All Other Coverage</span>
-                            </label>
+                                <!-- Life Insurance Section -->
+                                <div class="form-section type-section" id="lifeSection" style="display: none;">
+                                    <h4>❤️ Life Insurance Details</h4>
+                                    <div class="form-group">
+                                        <label for="coverageAmount">Coverage Amount *</label>
+                                        <select id="coverageAmount" name="coverageAmount">
+                                            <option value="">Select coverage amount</option>
+                                            <option value="50000">$50,000</option>
+                                            <option value="100000">$100,000</option>
+                                            <option value="250000">$250,000</option>
+                                            <option value="500000">$500,000</option>
+                                            <option value="750000">$750,000</option>
+                                            <option value="1000000">$1,000,000</option>
+                                            <option value="other">Other amount</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Tobacco Use *</label>
+                                        <div class="radio-group">
+                                            <label class="radio-label">
+                                                <input type="radio" name="tobaccoUse" value="no"> No
+                                            </label>
+                                            <label class="radio-label">
+                                                <input type="radio" name="tobaccoUse" value="yes"> Yes
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Gender at Birth *</label>
+                                        <div class="radio-group">
+                                            <label class="radio-label">
+                                                <input type="radio" name="genderAtBirth" value="male"> Male
+                                            </label>
+                                            <label class="radio-label">
+                                                <input type="radio" name="genderAtBirth" value="female"> Female
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Business Insurance Section -->
+                                <div class="form-section type-section" id="commercialSection" style="display: none;">
+                                    <h4>💼 Business Insurance Details</h4>
+                                    <div class="form-group">
+                                        <label for="businessType">Type of Business</label>
+                                        <input type="text" id="businessType" name="businessType" placeholder="e.g., Restaurant, Retail, Contractor">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="numEmployees">Number of Employees</label>
+                                        <input type="number" id="numEmployees" name="numEmployees" placeholder="e.g., 10" min="0">
+                                    </div>
+                                </div>
+
+                                <!-- Pet Insurance Section -->
+                                <div class="form-section type-section" id="petSection" style="display: none;">
+                                    <h4>🐾 Pet Insurance Details</h4>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="petType">Pet Type</label>
+                                            <select id="petType" name="petType">
+                                                <option value="">Select pet type</option>
+                                                <option value="dog">Dog</option>
+                                                <option value="cat">Cat</option>
+                                                <option value="other">Other</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="petAge">Pet Age</label>
+                                            <input type="number" id="petAge" name="petAge" placeholder="Years" min="0" max="30">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="petBreed">Breed</label>
+                                        <input type="text" id="petBreed" name="petBreed" placeholder="e.g., Golden Retriever">
+                                    </div>
+                                </div>
+
+                                <!-- Other Coverage Section -->
+                                <div class="form-section type-section" id="otherSection" style="display: none;">
+                                    <h4>📋 Other Coverage Details</h4>
+                                    <div class="form-group">
+                                        <label for="otherCoverageType">What type of coverage are you looking for?</label>
+                                        <input type="text" id="otherCoverageType" name="otherCoverageType" placeholder="e.g., Umbrella, Travel, Boat, RV">
+                                    </div>
+                                </div>
+
+                                <!-- Additional Details - Always visible once type selected -->
+                                <div class="form-section" id="additionalSection" style="display: none;">
+                                    <div class="form-group">
+                                        <label for="additionalDetails">Additional Details (optional)</label>
+                                        <textarea id="additionalDetails" name="additionalDetails" rows="3" placeholder="Any other information you'd like us to know..."></textarea>
+                                    </div>
+
+                                    <div class="texting-disclaimer">
+                                        <p class="disclaimer-text">By submitting, you may receive text messages about your quote. Msg & data rates may apply.</p>
+                                        <label class="opt-out-label">
+                                            <input type="checkbox" id="optOutTexts" name="optOutTexts">
+                                            <span>Opt out of text messages</span>
+                                        </label>
+                                    </div>
+
+                                    <button type="submit" class="submit-button">Get Your Free Quote</button>
+                                    <p class="form-note">We'll contact you within 24 hours with your personalized quote</p>
+                                </div>
+
+                                <!-- Placeholder when no type selected -->
+                                <div class="form-placeholder" id="formPlaceholder">
+                                    <p>👈 Select an insurance type to get started</p>
+                                </div>
+                            </form>
                         </div>
                     </div>
-
-                    <div class="texting-consent">
-                        <p class="consent-text">
-                            By submitting this form, you agree to receive text messages from Robert Yocom Agency with updates about your quote and insurance information. Message and data rates may apply.
-                        </p>
-                        <label class="consent-checkbox">
-                            <input type="checkbox" id="optOutTexts" name="optOutTexts">
-                            <span>Opt out of text messages</span>
-                        </label>
-                    </div>
-
-                    <button type="submit" class="submit-button">Get Your Free Quote</button>
-                    <p class="form-note">We'll contact you within 24 hours with your personalized quote</p>
-                </form>
+                </div>
             </div>
         </div>
     </section>
