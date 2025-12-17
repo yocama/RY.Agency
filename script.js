@@ -68,38 +68,48 @@ document.addEventListener('DOMContentLoaded', function() {
 // Quote form logic
 let currentStep = 1;
 let selectedInsuranceTypes = [];
-const quoteForm = document.getElementById('quoteForm');
-const formNav = document.getElementById('formNav');
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
-const submitBtn = document.getElementById('submitBtn');
-const addVehicleBtn = document.getElementById('addVehicleBtn');
+let quoteForm;
+let formNav;
+let prevBtn;
+let nextBtn;
+let submitBtn;
+let addVehicleBtn;
 let vehicleCount = 1;
 
-// Handle quote option button clicks
-document.querySelectorAll('.quote-option-btn').forEach(btn => {
-    btn.addEventListener('click', function(e) {
-        e.preventDefault();
-        const insuranceType = this.dataset.insurance;
+// Initialize quote form when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    quoteForm = document.getElementById('quoteForm');
+    formNav = document.getElementById('formNav');
+    prevBtn = document.getElementById('prevBtn');
+    nextBtn = document.getElementById('nextBtn');
+    submitBtn = document.getElementById('submitBtn');
+    addVehicleBtn = document.getElementById('addVehicleBtn');
 
-        // Toggle selection
-        if (selectedInsuranceTypes.includes(insuranceType)) {
-            selectedInsuranceTypes = selectedInsuranceTypes.filter(t => t !== insuranceType);
-        } else {
-            selectedInsuranceTypes.push(insuranceType);
-        }
+    // Handle quote option button clicks
+    document.querySelectorAll('.quote-option-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const insuranceType = this.dataset.insurance;
 
-        // Update button appearance
-        updateQuoteOptionButtons();
+            // Toggle selection
+            if (selectedInsuranceTypes.includes(insuranceType)) {
+                selectedInsuranceTypes = selectedInsuranceTypes.filter(t => t !== insuranceType);
+            } else {
+                selectedInsuranceTypes.push(insuranceType);
+            }
 
-        // Show form if at least one type is selected
-        if (selectedInsuranceTypes.length > 0) {
-            showQuoteForm();
-            updateSelectedTypesSidebar();
-            updateConditionalSteps();
-        } else {
-            hideQuoteForm();
-        }
+            // Update button appearance
+            updateQuoteOptionButtons();
+
+            // Show form if at least one type is selected
+            if (selectedInsuranceTypes.length > 0) {
+                showQuoteForm();
+                updateSelectedTypesSidebar();
+                updateConditionalSteps();
+            } else {
+                hideQuoteForm();
+            }
+        });
     });
 });
 
