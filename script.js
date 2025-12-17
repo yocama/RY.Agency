@@ -26,34 +26,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Google Places Autocomplete for address field
-function initAddressAutocomplete() {
-    const addressInput = document.getElementById('address');
-    if (!addressInput) return;
 
-    // Check if Google Maps API is loaded
-    if (typeof google === 'undefined' || !google.maps) {
-        console.log('Google Maps API not loaded. Address autocomplete disabled.');
-        return;
-    }
-
-    const autocomplete = new google.maps.places.Autocomplete(addressInput, {
-        componentRestrictions: { country: 'us' },
-        types: ['geocode']
-    });
-
-    autocomplete.addListener('place_changed', function() {
-        const place = autocomplete.getPlace();
-        if (!place.geometry) {
-            console.log('Place details not available');
-            return;
-        }
-        // Address is automatically filled by the autocomplete
-    });
-}
-
-// Initialize autocomplete when DOM is ready
-document.addEventListener('DOMContentLoaded', initAddressAutocomplete);
 
 // Handle service card "Get Quote" links to scroll to form and select type
 document.addEventListener('DOMContentLoaded', function() {
