@@ -641,7 +641,7 @@ body {
 }
 
 .quote-option-btn {
-    background-color: var(--light-bg);
+    background-color: var(--white);
     border: 2px solid var(--border-color);
     border-radius: 8px;
     padding: 1.5rem;
@@ -651,6 +651,8 @@ body {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    font-family: inherit;
+    font-size: 1rem;
 }
 
 .quote-option-btn:hover {
@@ -658,6 +660,12 @@ body {
     background-color: rgba(30, 64, 175, 0.05);
     transform: translateY(-4px);
     box-shadow: 0 8px 20px rgba(30, 64, 175, 0.15);
+}
+
+.quote-option-btn.selected {
+    border-color: var(--accent-color);
+    background-color: rgba(220, 38, 38, 0.1);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);
 }
 
 .quote-option-btn:active {
@@ -668,12 +676,14 @@ body {
     font-weight: 700;
     color: var(--primary-color);
     font-size: 1rem;
+    margin: 0;
 }
 
 .option-desc {
     font-size: 0.85rem;
     color: var(--text-light);
     line-height: 1.4;
+    margin: 0;
 }
 
 /* Quote Form Layout */

@@ -42,16 +42,26 @@ function initAddressAutocomplete() {
 document.addEventListener('DOMContentLoaded', initAddressAutocomplete);
 
 // Handle service card "Get Quote" links to auto-select insurance type
-document.querySelectorAll('.service-link[data-insurance]').forEach(link => {
-    link.addEventListener('click', function(e) {
-        const insuranceType = this.dataset.insurance;
-        // Auto-check the corresponding checkbox
-        const checkbox = document.querySelector(`input[name="insuranceTypes"][value="${insuranceType}"]`);
-        if (checkbox) {
-            checkbox.checked = true;
-            // Trigger change event to update conditional steps
-            checkbox.dispatchEvent(new Event('change', { bubbles: true }));
-        }
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.service-link[data-insurance]').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const insuranceType = this.dataset.insurance;
+
+            // Add to selected types if not already there
+            if (!selectedInsuranceTypes.includes(insuranceType)) {
+                selectedInsuranceTypes.push(insuranceType);
+            }
+
+            // Update button appearance and show form
+            updateQuoteOptionButtons();
+            showQuoteForm();
+            updateSelectedTypesSidebar();
+            updateConditionalSteps();
+
+            // Scroll to form
+            quoteForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
     });
 });
 
@@ -98,13 +108,9 @@ function updateQuoteOptionButtons() {
     document.querySelectorAll('.quote-option-btn').forEach(btn => {
         const insuranceType = btn.dataset.insurance;
         if (selectedInsuranceTypes.includes(insuranceType)) {
-            btn.style.borderColor = 'var(--accent-color)';
-            btn.style.backgroundColor = 'rgba(220, 38, 38, 0.1)';
-            btn.style.color = 'var(--accent-color)';
+            btn.classList.add('selected');
         } else {
-            btn.style.borderColor = 'var(--border-color)';
-            btn.style.backgroundColor = 'var(--light-bg)';
-            btn.style.color = 'inherit';
+            btn.classList.remove('selected');
         }
     });
 }
