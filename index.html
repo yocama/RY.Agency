@@ -281,41 +281,37 @@
                     <h3>Get Your Free Quote</h3>
                     <p class="form-subtitle">Select your insurance type(s) to get started</p>
 
-                    <div class="quote-form-layout">
-                        <!-- Left Column: Insurance Type Selection -->
-                        <div class="quote-types-column">
-                            <p class="column-label">Select Insurance Type(s)</p>
-                            <div class="quote-type-buttons">
-                                <button type="button" class="quote-type-btn" data-type="auto">
-                                    <span class="quote-type-icon">🚗</span>
-                                    <span class="quote-type-label">Auto</span>
-                                </button>
-                                <button type="button" class="quote-type-btn" data-type="home">
-                                    <span class="quote-type-icon">🏠</span>
-                                    <span class="quote-type-label">Home</span>
-                                </button>
-                                <button type="button" class="quote-type-btn" data-type="life">
-                                    <span class="quote-type-icon">❤️</span>
-                                    <span class="quote-type-label">Life</span>
-                                </button>
-                                <button type="button" class="quote-type-btn" data-type="commercial">
-                                    <span class="quote-type-icon">💼</span>
-                                    <span class="quote-type-label">Business</span>
-                                </button>
-                                <button type="button" class="quote-type-btn" data-type="pet">
-                                    <span class="quote-type-icon">🐾</span>
-                                    <span class="quote-type-label">Pet</span>
-                                </button>
-                                <button type="button" class="quote-type-btn" data-type="other">
-                                    <span class="quote-type-icon">📋</span>
-                                    <span class="quote-type-label">Other</span>
-                                </button>
-                            </div>
-                        </div>
+                    <!-- Insurance Type Cards Grid -->
+                    <div class="quote-type-grid">
+                        <button type="button" class="quote-type-card" data-type="auto">
+                            <span class="quote-type-icon">🚗</span>
+                            <span class="quote-type-label">Auto Insurance</span>
+                        </button>
+                        <button type="button" class="quote-type-card" data-type="home">
+                            <span class="quote-type-icon">🏠</span>
+                            <span class="quote-type-label">Home Insurance</span>
+                        </button>
+                        <button type="button" class="quote-type-card" data-type="life">
+                            <span class="quote-type-icon">❤️</span>
+                            <span class="quote-type-label">Life Insurance</span>
+                        </button>
+                        <button type="button" class="quote-type-card" data-type="commercial">
+                            <span class="quote-type-icon">💼</span>
+                            <span class="quote-type-label">Business Insurance</span>
+                        </button>
+                        <button type="button" class="quote-type-card" data-type="pet">
+                            <span class="quote-type-icon">🐾</span>
+                            <span class="quote-type-label">Pet Insurance</span>
+                        </button>
+                        <button type="button" class="quote-type-card" data-type="other">
+                            <span class="quote-type-icon">📋</span>
+                            <span class="quote-type-label">All Other Coverage</span>
+                        </button>
+                    </div>
 
-                        <!-- Right Column: Form Fields -->
-                        <div class="quote-form-column">
-                            <form class="quote-form" id="quoteForm">
+                    <!-- Form Section (appears after selection) -->
+                    <div class="quote-form-wrapper" id="quoteFormWrapper" style="display: none;">
+                        <form class="quote-form" id="quoteForm">
                                 <!-- Base Info Section - Always visible once type selected -->
                                 <div class="form-section base-info-section" id="baseInfoSection" style="display: none;">
                                     <h4>Your Information</h4>
@@ -519,14 +515,8 @@
                                     <button type="submit" class="submit-button">Get Your Free Quote</button>
                                     <p class="form-note">We'll contact you within 24 hours with your personalized quote</p>
                                 </div>
-
-                                <!-- Placeholder when no type selected -->
-                                <div class="form-placeholder" id="formPlaceholder">
-                                    <p>👈 Select an insurance type to get started</p>
-                                </div>
                             </form>
                         </div>
-                    </div>
                 </div>
             </div>
         </div>

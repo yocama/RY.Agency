@@ -643,7 +643,7 @@ body {
     border-radius: 12px;
     border: 1px solid var(--border-color);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    max-width: 900px;
+    max-width: 1000px;
     margin: 0 auto;
 }
 
@@ -662,90 +662,79 @@ body {
     text-align: center;
 }
 
-/* Two Column Layout */
-.quote-form-layout {
+/* Insurance Type Cards Grid */
+.quote-type-grid {
     display: grid;
-    grid-template-columns: 200px 1fr;
-    gap: 2rem;
-    min-height: 400px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
 }
 
-/* Left Column - Insurance Type Buttons */
-.quote-types-column {
-    border-right: 1px solid var(--border-color);
-    padding-right: 2rem;
-}
-
-.column-label {
-    font-weight: 600;
-    color: var(--primary-color);
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
-}
-
-.quote-type-buttons {
+.quote-type-card {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
-}
-
-.quote-type-btn {
-    display: flex;
     align-items: center;
-    gap: 0.75rem;
-    padding: 0.875rem 1rem;
+    justify-content: center;
+    padding: 2rem 1.5rem;
     border: 2px solid var(--border-color);
-    border-radius: 8px;
+    border-radius: 12px;
     background-color: var(--white);
     cursor: pointer;
     transition: all 0.3s ease;
-    text-align: left;
+    text-align: center;
+    min-height: 140px;
 }
 
-.quote-type-btn:hover {
+.quote-type-card:hover {
     border-color: var(--secondary-color);
     background-color: var(--light-bg);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.quote-type-btn.active {
+.quote-type-card.active {
     border-color: var(--accent-color);
-    background-color: rgba(220, 38, 38, 0.08);
+    background-color: rgba(220, 38, 38, 0.05);
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15);
 }
 
-.quote-type-icon {
-    font-size: 1.25rem;
+.quote-type-card .quote-type-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
 }
 
-.quote-type-label {
+.quote-type-card .quote-type-label {
     font-weight: 600;
-    color: var(--text-color);
-    font-size: 0.95rem;
+    color: var(--primary-color);
+    font-size: 1rem;
 }
 
-.quote-type-btn.active .quote-type-label {
+.quote-type-card.active .quote-type-label {
     color: var(--accent-color);
 }
 
-/* Right Column - Form Fields */
-.quote-form-column {
-    min-height: 350px;
+/* Form Wrapper */
+.quote-form-wrapper {
+    border-top: 1px solid var(--border-color);
+    padding-top: 2rem;
+    margin-top: 1rem;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .quote-form {
-    height: 100%;
-}
-
-.form-placeholder {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    color: var(--text-light);
-    font-size: 1.1rem;
-}
-
-.form-placeholder p {
-    margin: 0;
+    max-width: 700px;
+    margin: 0 auto;
 }
 
 /* Form Sections */
@@ -903,50 +892,28 @@ body {
 
 /* Responsive Design for Quote Form */
 @media (max-width: 768px) {
-    .quote-form-layout {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
+    .quote-type-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
     }
 
-    .quote-types-column {
-        border-right: none;
-        border-bottom: 1px solid var(--border-color);
-        padding-right: 0;
-        padding-bottom: 1.5rem;
+    .quote-type-card {
+        padding: 1.25rem 1rem;
+        min-height: 100px;
     }
 
-    .quote-type-buttons {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 0.5rem;
+    .quote-type-card .quote-type-icon {
+        font-size: 1.75rem;
+        margin-bottom: 0.5rem;
     }
 
-    .quote-type-btn {
-        flex-direction: column;
-        padding: 0.75rem 0.5rem;
-        text-align: center;
-        gap: 0.25rem;
-    }
-
-    .quote-type-icon {
-        font-size: 1.5rem;
-    }
-
-    .quote-type-label {
-        font-size: 0.75rem;
+    .quote-type-card .quote-type-label {
+        font-size: 0.85rem;
     }
 
     .form-row,
     .form-row.three-col {
         grid-template-columns: 1fr;
-    }
-
-    .form-placeholder {
-        min-height: 150px;
-    }
-
-    .form-placeholder p {
-        text-align: center;
     }
 }
 

@@ -66,9 +66,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 quoteFormContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 // Auto-select the insurance type
                 setTimeout(() => {
-                    const typeBtn = document.querySelector(`.quote-type-btn[data-type="${insuranceType}"]`);
-                    if (typeBtn && !typeBtn.classList.contains('active')) {
-                        typeBtn.click();
+                    const typeCard = document.querySelector(`.quote-type-card[data-type="${insuranceType}"]`);
+                    if (typeCard && !typeCard.classList.contains('active')) {
+                        typeCard.click();
                     }
                 }, 500);
             }
@@ -79,19 +79,19 @@ document.addEventListener('DOMContentLoaded', function() {
 // Quote Form Interactivity
 document.addEventListener('DOMContentLoaded', function() {
     const quoteForm = document.getElementById('quoteForm');
-    const typeButtons = document.querySelectorAll('.quote-type-btn');
+    const quoteFormWrapper = document.getElementById('quoteFormWrapper');
+    const typeCards = document.querySelectorAll('.quote-type-card');
     const baseInfoSection = document.getElementById('baseInfoSection');
     const additionalSection = document.getElementById('additionalSection');
-    const formPlaceholder = document.getElementById('formPlaceholder');
 
     // Track selected types
     let selectedTypes = new Set();
     let vehicleCount = 1;
     let driverCount = 1;
 
-    // Handle insurance type button clicks
-    typeButtons.forEach(btn => {
-        btn.addEventListener('click', function() {
+    // Handle insurance type card clicks
+    typeCards.forEach(card => {
+        card.addEventListener('click', function() {
             const type = this.getAttribute('data-type');
 
             // Toggle active state
@@ -110,8 +110,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function updateFormVisibility() {
         if (selectedTypes.size > 0) {
-            // Hide placeholder, show base info
-            formPlaceholder.style.display = 'none';
+            // Show form wrapper and base info
+            quoteFormWrapper.style.display = 'block';
             baseInfoSection.style.display = 'block';
             additionalSection.style.display = 'block';
 
@@ -123,8 +123,8 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('petSection').style.display = selectedTypes.has('pet') ? 'block' : 'none';
             document.getElementById('otherSection').style.display = selectedTypes.has('other') ? 'block' : 'none';
         } else {
-            // Show placeholder, hide everything else
-            formPlaceholder.style.display = 'flex';
+            // Hide form wrapper
+            quoteFormWrapper.style.display = 'none';
             baseInfoSection.style.display = 'none';
             additionalSection.style.display = 'none';
             document.querySelectorAll('.type-section').forEach(section => {
@@ -350,7 +350,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Reset form
             quoteForm.reset();
             selectedTypes.clear();
-            typeButtons.forEach(btn => btn.classList.remove('active'));
+            typeCards.forEach(card => card.classList.remove('active'));
             updateFormVisibility();
             vehicleCount = 1;
             driverCount = 1;
