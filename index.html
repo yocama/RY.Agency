@@ -48,22 +48,39 @@
             <h2>Why Choose Robert Yocom Agency?</h2>
             <div class="why-us-grid">
                 <div class="why-card">
-                    <div class="why-icon-number">01</div>
+                    <div class="why-icon-box">
+                        <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/>
+                        </svg>
+                    </div>
                     <h3>Industry Expert</h3>
                     <p>With over a decade of insurance industry experience, I understand coverage inside and out to get you the best protection.</p>
                 </div>
                 <div class="why-card">
-                    <div class="why-icon-number">02</div>
+                    <div class="why-icon-box">
+                        <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/>
+                        </svg>
+                    </div>
                     <h3>Competitive Rates</h3>
                     <p>We shop multiple carriers to find you the best rates. Our relationships with top insurers mean better prices for you.</p>
                 </div>
                 <div class="why-card">
-                    <div class="why-icon-number">03</div>
+                    <div class="why-icon-box">
+                        <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                        </svg>
+                    </div>
                     <h3>Fast & Easy Process</h3>
                     <p>Get a quote in minutes with our streamlined process. No hassle, no pressure, just straightforward insurance solutions.</p>
                 </div>
                 <div class="why-card">
-                    <div class="why-icon-number">04</div>
+                    <div class="why-icon-box">
+                        <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
                     <h3>Local & Personal</h3>
                     <p>We're here for Oklahoma families and businesses. You get personalized attention, not a call center experience.</p>
                 </div>
@@ -81,37 +98,31 @@
                     <div class="service-icon">🚗</div>
                     <h3>Auto Insurance</h3>
                     <p>Liability, collision, comprehensive, and uninsured motorist coverage. Protect yourself on Oklahoma roads.</p>
-                    <a href="#contact" class="service-link">Get Quote →</a>
+                    <a href="#contact" class="service-link" data-insurance="auto">Get Quote →</a>
                 </div>
                 <div class="service-card">
                     <div class="service-icon">🏠</div>
                     <h3>Home Insurance</h3>
                     <p>Dwelling, personal property, and liability coverage. Your home is your biggest investment—protect it.</p>
-                    <a href="#contact" class="service-link">Get Quote →</a>
+                    <a href="#contact" class="service-link" data-insurance="home">Get Quote →</a>
                 </div>
                 <div class="service-card">
                     <div class="service-icon">❤️</div>
                     <h3>Life Insurance</h3>
                     <p>Term and whole life options. Ensure your family's financial security for generations to come.</p>
-                    <a href="#contact" class="service-link">Get Quote →</a>
+                    <a href="#contact" class="service-link" data-insurance="life">Get Quote →</a>
                 </div>
                 <div class="service-card">
                     <div class="service-icon">💼</div>
                     <h3>Business Insurance</h3>
                     <p>General liability, property, workers' comp, and more. Comprehensive protection for your business.</p>
-                    <a href="#contact" class="service-link">Get Quote →</a>
+                    <a href="#contact" class="service-link" data-insurance="commercial">Get Quote →</a>
                 </div>
                 <div class="service-card">
                     <div class="service-icon">📋</div>
                     <h3>All Other Coverage</h3>
                     <p>Specialty insurance options including umbrella, pet, travel, and more. Comprehensive protection for every need.</p>
-                    <a href="#contact" class="service-link">Get Quote →</a>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon">🛡️</div>
-                    <h3>Umbrella Coverage</h3>
-                    <p>Extra liability protection beyond your standard policies. Peace of mind for the unexpected.</p>
-                    <a href="#contact" class="service-link">Get Quote →</a>
+                    <a href="#contact" class="service-link" data-insurance="other">Get Quote →</a>
                 </div>
             </div>
         </div>
@@ -214,132 +225,153 @@
                         <p>All of Oklahoma</p>
                     </div>
                 </div>
-                <form class="contact-form" id="quoteForm">
+                <form class="contact-form quote-form" id="quoteForm">
                     <h3>Get Your Free Quote</h3>
 
-                    <!-- Step 1: Insurance Type Selection -->
-                    <div class="form-step" id="step1">
-                        <div class="form-group">
-                            <label for="quoteType">What type of insurance do you need? *</label>
-                            <div class="insurance-options">
-                                <label class="insurance-option">
-                                    <input type="radio" name="quoteType" value="auto" required>
-                                    <span class="option-label">🚗 Auto Insurance</span>
+                    <div class="form-container">
+                        <!-- Left Sidebar: Insurance Type Selection -->
+                        <div class="form-sidebar">
+                            <h4>Select Coverage Types</h4>
+                            <div class="insurance-checklist">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="insuranceTypes" value="auto">
+                                    <span class="checkmark"></span>
+                                    <span class="label-text">Auto Insurance</span>
                                 </label>
-                                <label class="insurance-option">
-                                    <input type="radio" name="quoteType" value="home" required>
-                                    <span class="option-label">🏠 Home Insurance</span>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="insuranceTypes" value="home">
+                                    <span class="checkmark"></span>
+                                    <span class="label-text">Home Insurance</span>
                                 </label>
-                                <label class="insurance-option">
-                                    <input type="radio" name="quoteType" value="life" required>
-                                    <span class="option-label">❤️ Life Insurance</span>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="insuranceTypes" value="life">
+                                    <span class="checkmark"></span>
+                                    <span class="label-text">Life Insurance</span>
                                 </label>
-                                <label class="insurance-option">
-                                    <input type="radio" name="quoteType" value="commercial" required>
-                                    <span class="option-label">💼 Business Insurance</span>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="insuranceTypes" value="commercial">
+                                    <span class="checkmark"></span>
+                                    <span class="label-text">Business Insurance</span>
                                 </label>
-                                <label class="insurance-option">
-                                    <input type="radio" name="quoteType" value="bundle" required>
-                                    <span class="option-label">📦 Bundle (Multiple)</span>
-                                </label>
-                                <label class="insurance-option">
-                                    <input type="radio" name="quoteType" value="other" required>
-                                    <span class="option-label">📋 Other Coverage</span>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" name="insuranceTypes" value="other">
+                                    <span class="checkmark"></span>
+                                    <span class="label-text">All Other Coverage</span>
                                 </label>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Step 2: Personal Info (revealed after type selection) -->
-                    <div class="form-step" id="step2" style="display:none;">
-                        <div class="form-group">
-                            <label for="fullName">First & Last Name *</label>
-                            <input type="text" id="fullName" name="fullName" placeholder="John Doe">
-                        </div>
+                        <!-- Right Content: Form Fields -->
+                        <div class="form-content">
+                            <!-- Step 1: Contact Info -->
+                            <div class="form-step" id="step1">
+                                <h4>Your Contact Information</h4>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="firstName">First Name *</label>
+                                        <input type="text" id="firstName" name="firstName" placeholder="John" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="lastName">Last Name *</label>
+                                        <input type="text" id="lastName" name="lastName" placeholder="Doe" required>
+                                    </div>
+                                </div>
 
-                        <div class="form-group">
-                            <label for="address">Address *</label>
-                            <input type="text" id="address" name="address" placeholder="123 Main St, City, OK 12345">
-                        </div>
+                                <div class="form-group">
+                                    <label for="email">Email *</label>
+                                    <input type="email" id="email" name="email" placeholder="john@example.com" required>
+                                </div>
 
-                        <div class="form-group">
-                            <label for="dob">Date of Birth *</label>
-                            <input type="date" id="dob" name="dob">
-                        </div>
-                    </div>
+                                <div class="form-group">
+                                    <label for="phone">Phone *</label>
+                                    <input type="tel" id="phone" name="phone" placeholder="(918) 555-0000" required>
+                                </div>
 
-                    <!-- Step 3: Type-Specific Fields -->
-                    <div class="form-step" id="step3" style="display:none;">
-                        <!-- Auto Insurance Fields -->
-                        <div id="autoFields" class="conditional-fields" style="display:none;">
-                            <div class="form-group">
-                                <label for="vehicleInfo">Vehicle (Year/Make/Model or VIN) *</label>
-                                <input type="text" id="vehicleInfo" name="vehicleInfo" placeholder="2020 Honda Civic or VIN">
+                                <div class="form-group">
+                                    <label for="address">Address *</label>
+                                    <input type="text" id="address" name="address" placeholder="123 Main St, City, OK 12345" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="dob">Date of Birth *</label>
+                                    <input type="date" id="dob" name="dob" required>
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- Home Insurance Fields -->
-                        <div id="homeFields" class="conditional-fields" style="display:none;">
-                            <div class="form-group">
-                                <label for="roofAge">Roof Age (years) *</label>
-                                <input type="number" id="roofAge" name="roofAge" placeholder="10" min="0">
+                            <!-- Step 2: Auto Insurance Fields -->
+                            <div class="form-step conditional-step" id="autoStep" style="display:none;">
+                                <h4>Auto Insurance Details</h4>
+                                <div id="vehiclesList">
+                                    <div class="vehicle-group" data-vehicle="1">
+                                        <h5>Vehicle 1</h5>
+                                        <div class="form-group">
+                                            <label for="vehicle1Info">Vehicle (Year/Make/Model or VIN) *</label>
+                                            <input type="text" id="vehicle1Info" name="vehicle1Info" placeholder="2020 Honda Civic or VIN">
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" class="add-vehicle-btn" id="addVehicleBtn">+ Add Another Vehicle</button>
                             </div>
-                        </div>
 
-                        <!-- Life Insurance Fields -->
-                        <div id="lifeFields" class="conditional-fields" style="display:none;">
-                            <div class="form-group">
-                                <label for="coverageAmount">Desired Coverage Amount ($) *</label>
-                                <input type="number" id="coverageAmount" name="coverageAmount" placeholder="250000" min="0">
+                            <!-- Step 3: Home Insurance Fields -->
+                            <div class="form-step conditional-step" id="homeStep" style="display:none;">
+                                <h4>Home Insurance Details</h4>
+                                <div class="form-group">
+                                    <label for="roofAge">Roof Age (years) *</label>
+                                    <input type="number" id="roofAge" name="roofAge" placeholder="10" min="0">
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- Bundle Fields -->
-                        <div id="bundleFields" class="conditional-fields" style="display:none;">
-                            <div class="form-group">
-                                <label>Which types of coverage are you interested in? (Select all that apply)</label>
-                                <div class="checkbox-group">
-                                    <label class="checkbox-option">
-                                        <input type="checkbox" name="bundleTypes" value="auto">
-                                        <span>Auto</span>
-                                    </label>
-                                    <label class="checkbox-option">
-                                        <input type="checkbox" name="bundleTypes" value="home">
-                                        <span>Home</span>
-                                    </label>
-                                    <label class="checkbox-option">
-                                        <input type="checkbox" name="bundleTypes" value="life">
-                                        <span>Life</span>
-                                    </label>
-                                    <label class="checkbox-option">
-                                        <input type="checkbox" name="bundleTypes" value="commercial">
-                                        <span>Business</span>
-                                    </label>
-                                    <label class="checkbox-option">
-                                        <input type="checkbox" name="bundleTypes" value="other">
-                                        <span>Other</span>
-                                    </label>
+                            <!-- Step 4: Life Insurance Fields -->
+                            <div class="form-step conditional-step" id="lifeStep" style="display:none;">
+                                <h4>Life Insurance Details</h4>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="genderAtBirth">Gender at Birth *</label>
+                                        <select id="genderAtBirth" name="genderAtBirth">
+                                            <option value="">Select...</option>
+                                            <option value="M">Male</option>
+                                            <option value="F">Female</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="tobacco">Do you use tobacco? *</label>
+                                        <select id="tobacco" name="tobacco">
+                                            <option value="">Select...</option>
+                                            <option value="yes">Yes</option>
+                                            <option value="no">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="coverageAmount">Desired Coverage Amount ($) *</label>
+                                    <input type="number" id="coverageAmount" name="coverageAmount" placeholder="250000" min="0">
+                                </div>
+                            </div>
+
+                            <!-- Step 5: Business Insurance Fields -->
+                            <div class="form-step conditional-step" id="commercialStep" style="display:none;">
+                                <h4>Business Insurance Details</h4>
+                                <div class="form-group">
+                                    <label for="businessType">Type of Business *</label>
+                                    <input type="text" id="businessType" name="businessType" placeholder="e.g., Retail, Consulting, etc.">
+                                </div>
+                            </div>
+
+                            <!-- Step 6: Other Coverage Fields -->
+                            <div class="form-step conditional-step" id="otherStep" style="display:none;">
+                                <h4>Other Coverage Details</h4>
+                                <div class="form-group">
+                                    <label for="otherCoverageType">Type of Coverage *</label>
+                                    <input type="text" id="otherCoverageType" name="otherCoverageType" placeholder="e.g., Umbrella, Pet, Travel, etc.">
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Step 4: Contact Info -->
-                    <div class="form-step" id="step4" style="display:none;">
-                        <div class="form-group">
-                            <label for="email">Email *</label>
-                            <input type="email" id="email" name="email" placeholder="john@example.com">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="phone">Phone *</label>
-                            <input type="tel" id="phone" name="phone" placeholder="(918) 555-0000">
-                        </div>
-                    </div>
-
                     <!-- Form Navigation -->
-                    <div class="form-navigation" id="formNav" style="display:none;">
-                        <button type="button" class="nav-button secondary" id="prevBtn">← Back</button>
+                    <div class="form-navigation" id="formNav">
+                        <button type="button" class="nav-button secondary" id="prevBtn" style="display:none;">← Back</button>
                         <button type="button" class="nav-button primary" id="nextBtn">Next →</button>
                     </div>
 
@@ -365,6 +397,8 @@
         </div>
     </footer>
 
+    <!-- Google Places API for address autocomplete -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_API_KEY&libraries=places"></script>
     <script src="script.js"></script>
 </body>
 </html>

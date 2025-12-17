@@ -12,23 +12,93 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Nested form (Russian doll) logic
+// Google Places Autocomplete for address field
+function initAddressAutocomplete() {
+    const addressInput = document.getElementById('address');
+    if (!addressInput) return;
+
+    // Check if Google Maps API is loaded
+    if (typeof google === 'undefined' || !google.maps) {
+        console.log('Google Maps API not loaded. Address autocomplete disabled.');
+        return;
+    }
+
+    const autocomplete = new google.maps.places.Autocomplete(addressInput, {
+        componentRestrictions: { country: 'us' },
+        types: ['geocode']
+    });
+
+    autocomplete.addListener('place_changed', function() {
+        const place = autocomplete.getPlace();
+        if (!place.geometry) {
+            console.log('Place details not available');
+            return;
+        }
+        // Address is automatically filled by the autocomplete
+    });
+}
+
+// Initialize autocomplete when DOM is ready
+document.addEventListener('DOMContentLoaded', initAddressAutocomplete);
+
+// Handle service card "Get Quote" links to auto-select insurance type
+document.querySelectorAll('.service-link[data-insurance]').forEach(link => {
+    link.addEventListener('click', function(e) {
+        const insuranceType = this.dataset.insurance;
+        // Auto-check the corresponding checkbox
+        const checkbox = document.querySelector(`input[name="insuranceTypes"][value="${insuranceType}"]`);
+        if (checkbox) {
+            checkbox.checked = true;
+            // Trigger change event to update conditional steps
+            checkbox.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+    });
+});
+
+// Quote form logic
 let currentStep = 1;
-const totalSteps = 4;
 const quoteForm = document.getElementById('quoteForm');
 const formNav = document.getElementById('formNav');
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
 const submitBtn = document.getElementById('submitBtn');
+const insuranceCheckboxes = document.querySelectorAll('input[name="insuranceTypes"]');
+const addVehicleBtn = document.getElementById('addVehicleBtn');
+let vehicleCount = 1;
 
-// Handle insurance type selection
-const insuranceOptions = document.querySelectorAll('input[name="quoteType"]');
-insuranceOptions.forEach(option => {
-    option.addEventListener('change', function() {
-        // Show step 2 when type is selected
-        showStep(2);
+// Handle insurance type selection changes
+insuranceCheckboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+        updateConditionalSteps();
     });
 });
+
+// Update which conditional steps are shown based on selected insurance types
+function updateConditionalSteps() {
+    const selectedTypes = Array.from(insuranceCheckboxes)
+        .filter(cb => cb.checked)
+        .map(cb => cb.value);
+
+    // Hide all conditional steps
+    document.querySelectorAll('.conditional-step').forEach(step => {
+        step.style.display = 'none';
+    });
+
+    // Show selected steps
+    selectedTypes.forEach(type => {
+        const stepId = type === 'auto' ? 'autoStep' :
+                      type === 'home' ? 'homeStep' :
+                      type === 'life' ? 'lifeStep' :
+                      type === 'commercial' ? 'commercialStep' :
+                      type === 'other' ? 'otherStep' : null;
+
+        if (stepId) {
+            document.getElementById(stepId).style.display = 'block';
+        }
+    });
+
+    updateNavigation();
+}
 
 // Show specific step
 function showStep(step) {
@@ -43,34 +113,28 @@ function showStep(step) {
 
     // Update navigation buttons
     updateNavigation();
+
+    // Scroll to form
+    quoteForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 // Update navigation buttons visibility
 function updateNavigation() {
     if (currentStep === 1) {
-        formNav.style.display = 'none';
+        prevBtn.style.display = 'none';
+        nextBtn.style.display = 'block';
         submitBtn.style.display = 'none';
-    } else if (currentStep === totalSteps) {
-        formNav.style.display = 'flex';
+    } else {
+        prevBtn.style.display = 'block';
         submitBtn.style.display = 'block';
         nextBtn.style.display = 'none';
-    } else {
-        formNav.style.display = 'flex';
-        submitBtn.style.display = 'none';
-        nextBtn.style.display = 'block';
     }
 }
 
 // Next button handler
 nextBtn.addEventListener('click', function() {
     if (validateCurrentStep()) {
-        if (currentStep === 1) {
-            showStep(2);
-        } else if (currentStep === 2) {
-            showStep(3);
-        } else if (currentStep === 3) {
-            showStep(4);
-        }
+        showStep(2);
     }
 });
 
@@ -89,70 +153,101 @@ function validateCurrentStep() {
     for (let input of inputs) {
         if (!input.value) {
             alert('Please fill in all required fields');
+            input.focus();
             return false;
         }
+    }
+
+    // Check if at least one insurance type is selected
+    const selectedTypes = Array.from(insuranceCheckboxes).some(cb => cb.checked);
+    if (!selectedTypes) {
+        alert('Please select at least one insurance type');
+        return false;
     }
 
     return true;
 }
 
-// Handle conditional fields based on quote type
-const quoteTypeRadios = document.querySelectorAll('input[name="quoteType"]');
-quoteTypeRadios.forEach(radio => {
-    radio.addEventListener('change', function() {
-        // Hide all conditional fields
-        document.querySelectorAll('.conditional-fields').forEach(field => {
-            field.style.display = 'none';
-            field.querySelectorAll('input').forEach(input => {
-                input.required = false;
-            });
-        });
+// Add vehicle functionality
+if (addVehicleBtn) {
+    addVehicleBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        vehicleCount++;
+        const vehiclesList = document.getElementById('vehiclesList');
+        const newVehicle = document.createElement('div');
+        newVehicle.className = 'vehicle-group';
+        newVehicle.dataset.vehicle = vehicleCount;
+        newVehicle.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h5>Vehicle ${vehicleCount}</h5>
+                <button type="button" class="remove-vehicle-btn" data-vehicle="${vehicleCount}">Remove</button>
+            </div>
+            <div class="form-group">
+                <label for="vehicle${vehicleCount}Info">Vehicle (Year/Make/Model or VIN) *</label>
+                <input type="text" id="vehicle${vehicleCount}Info" name="vehicle${vehicleCount}Info" placeholder="2020 Honda Civic or VIN">
+            </div>
+        `;
+        vehiclesList.appendChild(newVehicle);
 
-        // Show relevant fields based on selection
-        const quoteType = this.value;
-        if (quoteType === 'auto') {
-            document.getElementById('autoFields').style.display = 'block';
-            document.getElementById('vehicleInfo').required = true;
-        } else if (quoteType === 'home') {
-            document.getElementById('homeFields').style.display = 'block';
-            document.getElementById('roofAge').required = true;
-        } else if (quoteType === 'life') {
-            document.getElementById('lifeFields').style.display = 'block';
-            document.getElementById('coverageAmount').required = true;
-        } else if (quoteType === 'bundle') {
-            document.getElementById('bundleFields').style.display = 'block';
-        }
+        // Add remove button listener
+        newVehicle.querySelector('.remove-vehicle-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            newVehicle.remove();
+        });
     });
-})
+}
 
 // Quote form submission handler
 if (quoteForm) {
     quoteForm.addEventListener('submit', function(e) {
         e.preventDefault();
 
-        // Get selected quote type
-        const selectedType = document.querySelector('input[name="quoteType"]:checked');
-        const quoteType = selectedType ? selectedType.value : '';
+        // Get selected insurance types
+        const selectedTypes = Array.from(insuranceCheckboxes)
+            .filter(cb => cb.checked)
+            .map(cb => cb.value);
 
         // Collect all form data
         const formData = {
-            quoteType: quoteType,
-            fullName: document.getElementById('fullName').value,
-            address: document.getElementById('address').value,
-            dob: document.getElementById('dob').value,
+            insuranceTypes: selectedTypes,
+            firstName: document.getElementById('firstName').value,
+            lastName: document.getElementById('lastName').value,
             email: document.getElementById('email').value,
             phone: document.getElementById('phone').value,
-            vehicleInfo: document.getElementById('vehicleInfo').value || null,
-            roofAge: document.getElementById('roofAge').value || null,
-            coverageAmount: document.getElementById('coverageAmount').value || null,
-            bundleTypes: quoteType === 'bundle' ? Array.from(document.querySelectorAll('input[name="bundleTypes"]:checked')).map(cb => cb.value) : null,
+            address: document.getElementById('address').value,
+            dob: document.getElementById('dob').value,
             timestamp: new Date().toISOString()
         };
 
-        // Validate required fields
-        if (!formData.quoteType || !formData.fullName || !formData.address || !formData.dob || !formData.email || !formData.phone) {
-            alert('Please fill in all required fields');
-            return;
+        // Add type-specific data
+        if (selectedTypes.includes('auto')) {
+            const vehicles = [];
+            document.querySelectorAll('.vehicle-group').forEach((group, index) => {
+                const vehicleNum = index + 1;
+                const vehicleInfo = document.getElementById(`vehicle${vehicleNum}Info`).value;
+                if (vehicleInfo) {
+                    vehicles.push(vehicleInfo);
+                }
+            });
+            formData.vehicles = vehicles;
+        }
+
+        if (selectedTypes.includes('home')) {
+            formData.roofAge = document.getElementById('roofAge').value || null;
+        }
+
+        if (selectedTypes.includes('life')) {
+            formData.genderAtBirth = document.getElementById('genderAtBirth').value || null;
+            formData.tobacco = document.getElementById('tobacco').value || null;
+            formData.coverageAmount = document.getElementById('coverageAmount').value || null;
+        }
+
+        if (selectedTypes.includes('commercial')) {
+            formData.businessType = document.getElementById('businessType').value || null;
+        }
+
+        if (selectedTypes.includes('other')) {
+            formData.otherCoverageType = document.getElementById('otherCoverageType').value || null;
         }
 
         // TODO: Replace with your actual CRM endpoint URL
@@ -172,6 +267,16 @@ if (quoteForm) {
                 quoteForm.reset();
                 currentStep = 1;
                 showStep(1);
+                vehicleCount = 1;
+                document.getElementById('vehiclesList').innerHTML = `
+                    <div class="vehicle-group" data-vehicle="1">
+                        <h5>Vehicle 1</h5>
+                        <div class="form-group">
+                            <label for="vehicle1Info">Vehicle (Year/Make/Model or VIN) *</label>
+                            <input type="text" id="vehicle1Info" name="vehicle1Info" placeholder="2020 Honda Civic or VIN">
+                        </div>
+                    </div>
+                `;
             } else {
                 throw new Error('Failed to submit quote');
             }
@@ -179,18 +284,21 @@ if (quoteForm) {
         .catch(error => {
             console.error('Error:', error);
             // Fallback to email if CRM endpoint not configured
-            const subject = encodeURIComponent('Quote Request from ' + formData.fullName);
+            const subject = encodeURIComponent('Quote Request from ' + formData.firstName + ' ' + formData.lastName);
             const body = encodeURIComponent(
-                'Quote Type: ' + formData.quoteType + '\n' +
-                'Name: ' + formData.fullName + '\n' +
-                'Address: ' + formData.address + '\n' +
-                'DOB: ' + formData.dob + '\n' +
+                'Insurance Types: ' + formData.insuranceTypes.join(', ') + '\n' +
+                'Name: ' + formData.firstName + ' ' + formData.lastName + '\n' +
                 'Email: ' + formData.email + '\n' +
                 'Phone: ' + formData.phone + '\n' +
-                (formData.vehicleInfo ? 'Vehicle: ' + formData.vehicleInfo + '\n' : '') +
+                'Address: ' + formData.address + '\n' +
+                'DOB: ' + formData.dob + '\n' +
+                (formData.vehicles ? 'Vehicles: ' + formData.vehicles.join(', ') + '\n' : '') +
                 (formData.roofAge ? 'Roof Age: ' + formData.roofAge + ' years\n' : '') +
+                (formData.genderAtBirth ? 'Gender: ' + formData.genderAtBirth + '\n' : '') +
+                (formData.tobacco ? 'Tobacco Use: ' + formData.tobacco + '\n' : '') +
                 (formData.coverageAmount ? 'Coverage Amount: $' + formData.coverageAmount + '\n' : '') +
-                (formData.bundleTypes ? 'Bundle Types: ' + formData.bundleTypes.join(', ') + '\n' : '')
+                (formData.businessType ? 'Business Type: ' + formData.businessType + '\n' : '') +
+                (formData.otherCoverageType ? 'Other Coverage: ' + formData.otherCoverageType + '\n' : '')
             );
             window.location.href = 'mailto:Sales@ry.agency?subject=' + subject + '&body=' + body;
             alert('Quote submitted via email. We\'ll contact you within 24 hours.');
