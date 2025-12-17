@@ -612,132 +612,63 @@ body {
     box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
 }
 
-/* Quote Section - Initial Selection */
-.quote-section {
-    background: linear-gradient(135deg, rgba(30, 64, 175, 0.05) 0%, rgba(220, 38, 38, 0.05) 100%);
-    padding: 3rem 2.5rem;
+/* Quote Form */
+.quote-form {
+    background-color: var(--white);
+    padding: 2.5rem;
     border-radius: 12px;
     border: 1px solid var(--border-color);
-    margin-bottom: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    max-width: 600px;
+    margin: 0 auto;
 }
 
-.quote-section h3 {
+.quote-form h3 {
     color: var(--primary-color);
     margin-bottom: 0.5rem;
     font-size: 1.8rem;
     font-weight: 700;
 }
 
-.quote-intro {
+.form-subtitle {
     color: var(--text-light);
-    margin-bottom: 2.5rem;
-    font-size: 1rem;
-    font-weight: 500;
-}
-
-.quote-options {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1.5rem;
-}
-
-.quote-option-btn {
-    background-color: var(--white);
-    border: 2px solid var(--border-color);
-    border-radius: 10px;
-    padding: 2rem 1.5rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-align: left;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    font-family: inherit;
-    font-size: 1rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-.quote-option-btn:hover {
-    border-color: var(--secondary-color);
-    background-color: var(--light-bg);
-    transform: translateY(-6px);
-    box-shadow: 0 12px 24px rgba(30, 64, 175, 0.2);
-}
-
-.quote-option-btn.selected {
-    border-color: var(--accent-color);
-    background-color: rgba(220, 38, 38, 0.08);
-    box-shadow: 0 8px 20px rgba(220, 38, 38, 0.25);
-}
-
-.quote-option-btn:active {
-    transform: translateY(-3px);
-}
-
-.option-title {
-    font-weight: 700;
-    color: var(--primary-color);
-    font-size: 1.1rem;
-    margin: 0;
-}
-
-.option-desc {
-    font-size: 0.9rem;
-    color: var(--text-light);
-    line-height: 1.5;
-    margin: 0;
-}
-
-/* Quote Form Layout */
-.quote-form {
-    display: flex;
-    flex-direction: column;
-}
-
-.form-container {
-    display: grid;
-    grid-template-columns: 250px 1fr;
-    gap: 2rem;
     margin-bottom: 2rem;
-}
-
-.form-sidebar {
-    background-color: var(--white);
-    padding: 1.5rem;
-    border-radius: 8px;
-    border: 1px solid var(--border-color);
-    height: fit-content;
-}
-
-.form-sidebar h4 {
-    color: var(--primary-color);
     font-size: 1rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-    margin-top: 0;
 }
 
-.insurance-checklist {
-    display: flex;
-    flex-direction: column;
+.checkbox-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1rem;
+    margin-top: 1rem;
 }
 
-.selected-type-item {
+.checkbox-label {
     display: flex;
     align-items: center;
     gap: 0.75rem;
+    cursor: pointer;
     padding: 0.75rem;
-    background-color: rgba(220, 38, 38, 0.1);
-    border-radius: 6px;
-    color: var(--primary-color);
-    font-weight: 500;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    transition: all 0.3s ease;
 }
 
-.checkmark-selected {
-    color: var(--accent-color);
-    font-weight: bold;
-    font-size: 1.1rem;
+.checkbox-label:hover {
+    border-color: var(--secondary-color);
+    background-color: var(--light-bg);
+}
+
+.checkbox-label input[type="checkbox"] {
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+    accent-color: var(--accent-color);
+}
+
+.checkbox-label span {
+    font-weight: 500;
+    color: var(--text-color);
 }
 
 .checkbox-item {
