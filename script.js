@@ -1,70 +1,15 @@
-// Testimonials Carousel
+// Testimonials auto-scroll - duplicate cards for seamless loop
 document.addEventListener('DOMContentLoaded', function() {
     const track = document.getElementById('testimonialsTrack');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const dotsContainer = document.getElementById('carouselDots');
-
     if (!track) return;
 
-    const cards = track.querySelectorAll('.testimonial-card');
-    const cardCount = cards.length;
-    let currentIndex = 0;
-    let autoplayInterval;
+    const cards = Array.from(track.querySelectorAll('.testimonial-card'));
 
-    // Create dots
-    for (let i = 0; i < cardCount; i++) {
-        const dot = document.createElement('div');
-        dot.className = 'dot' + (i === 0 ? ' active' : '');
-        dot.addEventListener('click', () => goToSlide(i));
-        dotsContainer.appendChild(dot);
-    }
-
-    function updateCarousel() {
-        track.style.transform = `translateX(-${currentIndex * 100}%)`;
-
-        // Update dots
-        document.querySelectorAll('.dot').forEach((dot, index) => {
-            dot.classList.toggle('active', index === currentIndex);
-        });
-    }
-
-    function goToSlide(index) {
-        currentIndex = index;
-        updateCarousel();
-        resetAutoplay();
-    }
-
-    function nextSlide() {
-        currentIndex = (currentIndex + 1) % cardCount;
-        updateCarousel();
-    }
-
-    function prevSlide() {
-        currentIndex = (currentIndex - 1 + cardCount) % cardCount;
-        updateCarousel();
-    }
-
-    function startAutoplay() {
-        autoplayInterval = setInterval(nextSlide, 5000);
-    }
-
-    function resetAutoplay() {
-        clearInterval(autoplayInterval);
-        startAutoplay();
-    }
-
-    prevBtn.addEventListener('click', () => {
-        prevSlide();
-        resetAutoplay();
+    // Duplicate all cards to create seamless loop
+    cards.forEach(card => {
+        const clone = card.cloneNode(true);
+        track.appendChild(clone);
     });
-
-    nextBtn.addEventListener('click', () => {
-        nextSlide();
-        resetAutoplay();
-    });
-
-    startAutoplay();
 });
 
 // Smooth scrolling for navigation links
