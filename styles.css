@@ -260,34 +260,28 @@ body {
     text-align: left;
     transition: all 0.3s;
     border: 1px solid var(--border-color);
+    border-top: 4px solid var(--secondary-color);
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1rem;
+    position: relative;
+}
+
+.why-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--secondary-color) 0%, var(--accent-color) 100%);
+    border-radius: 8px 8px 0 0;
 }
 
 .why-card:hover {
     transform: translateY(-8px);
     box-shadow: 0 15px 35px rgba(0,0,0,0.12);
-    border-color: var(--accent-color);
-}
-
-.why-icon-box {
-    width: 60px;
-    height: 60px;
-    background-color: rgba(220, 38, 38, 0.1);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 0.5rem;
-}
-
-.why-icon {
-    width: 32px;
-    height: 32px;
-    color: var(--accent-color);
-    stroke-linecap: round;
-    stroke-linejoin: round;
+    border-color: var(--secondary-color);
 }
 
 .why-card h3 {
@@ -295,7 +289,6 @@ body {
     margin: 0;
     font-size: 1.25rem;
     font-weight: 700;
-    margin-top: -0.5rem;
 }
 
 .why-card p {
@@ -619,6 +612,70 @@ body {
     box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
 }
 
+/* Quote Section - Initial Selection */
+.quote-section {
+    background-color: var(--white);
+    padding: 2.5rem;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 2rem;
+}
+
+.quote-section h3 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.quote-intro {
+    color: var(--text-light);
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
+}
+
+.quote-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.quote-option-btn {
+    background-color: var(--light-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.quote-option-btn:hover {
+    border-color: var(--secondary-color);
+    background-color: rgba(30, 64, 175, 0.05);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(30, 64, 175, 0.15);
+}
+
+.quote-option-btn:active {
+    transform: translateY(-2px);
+}
+
+.option-title {
+    font-weight: 700;
+    color: var(--primary-color);
+    font-size: 1rem;
+}
+
+.option-desc {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    line-height: 1.4;
+}
+
 /* Quote Form Layout */
 .quote-form {
     display: flex;
@@ -652,6 +709,23 @@ body {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+}
+
+.selected-type-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background-color: rgba(220, 38, 38, 0.1);
+    border-radius: 6px;
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.checkmark-selected {
+    color: var(--accent-color);
+    font-weight: bold;
+    font-size: 1.1rem;
 }
 
 .checkbox-item {

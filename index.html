@@ -48,39 +48,18 @@
             <h2>Why Choose Robert Yocom Agency?</h2>
             <div class="why-us-grid">
                 <div class="why-card">
-                    <div class="why-icon-box">
-                        <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/>
-                        </svg>
-                    </div>
                     <h3>Industry Expert</h3>
                     <p>With over a decade of insurance industry experience, I understand coverage inside and out to get you the best protection.</p>
                 </div>
                 <div class="why-card">
-                    <div class="why-icon-box">
-                        <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/>
-                        </svg>
-                    </div>
                     <h3>Competitive Rates</h3>
                     <p>We shop multiple carriers to find you the best rates. Our relationships with top insurers mean better prices for you.</p>
                 </div>
                 <div class="why-card">
-                    <div class="why-icon-box">
-                        <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
-                        </svg>
-                    </div>
                     <h3>Fast & Easy Process</h3>
                     <p>Get a quote in minutes with our streamlined process. No hassle, no pressure, just straightforward insurance solutions.</p>
                 </div>
                 <div class="why-card">
-                    <div class="why-icon-box">
-                        <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="12" cy="7" r="4"></circle>
-                        </svg>
-                    </div>
                     <h3>Local & Personal</h3>
                     <p>We're here for Oklahoma families and businesses. You get personalized attention, not a call center experience.</p>
                 </div>
@@ -225,39 +204,43 @@
                         <p>All of Oklahoma</p>
                     </div>
                 </div>
-                <form class="contact-form quote-form" id="quoteForm">
+                <div class="quote-section">
+                    <h3>Get Your Free Quote</h3>
+                    <p class="quote-intro">Select the type of insurance you need to get started</p>
+
+                    <div class="quote-options">
+                        <button type="button" class="quote-option-btn" data-insurance="auto">
+                            <span class="option-title">Auto Insurance</span>
+                            <span class="option-desc">Liability, collision, comprehensive coverage</span>
+                        </button>
+                        <button type="button" class="quote-option-btn" data-insurance="home">
+                            <span class="option-title">Home Insurance</span>
+                            <span class="option-desc">Dwelling, personal property, liability</span>
+                        </button>
+                        <button type="button" class="quote-option-btn" data-insurance="life">
+                            <span class="option-title">Life Insurance</span>
+                            <span class="option-desc">Term and whole life options</span>
+                        </button>
+                        <button type="button" class="quote-option-btn" data-insurance="commercial">
+                            <span class="option-title">Business Insurance</span>
+                            <span class="option-desc">General liability, property, workers' comp</span>
+                        </button>
+                        <button type="button" class="quote-option-btn" data-insurance="other">
+                            <span class="option-title">All Other Coverage</span>
+                            <span class="option-desc">Umbrella, pet, travel, and more</span>
+                        </button>
+                    </div>
+                </div>
+
+                <form class="contact-form quote-form" id="quoteForm" style="display:none;">
                     <h3>Get Your Free Quote</h3>
 
                     <div class="form-container">
                         <!-- Left Sidebar: Insurance Type Selection -->
                         <div class="form-sidebar">
-                            <h4>Select Coverage Types</h4>
-                            <div class="insurance-checklist">
-                                <label class="checkbox-item">
-                                    <input type="checkbox" name="insuranceTypes" value="auto">
-                                    <span class="checkmark"></span>
-                                    <span class="label-text">Auto Insurance</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" name="insuranceTypes" value="home">
-                                    <span class="checkmark"></span>
-                                    <span class="label-text">Home Insurance</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" name="insuranceTypes" value="life">
-                                    <span class="checkmark"></span>
-                                    <span class="label-text">Life Insurance</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" name="insuranceTypes" value="commercial">
-                                    <span class="checkmark"></span>
-                                    <span class="label-text">Business Insurance</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" name="insuranceTypes" value="other">
-                                    <span class="checkmark"></span>
-                                    <span class="label-text">All Other Coverage</span>
-                                </label>
+                            <h4>Selected Coverage</h4>
+                            <div class="insurance-checklist" id="selectedTypes">
+                                <!-- Dynamically populated -->
                             </div>
                         </div>
 

@@ -57,35 +57,104 @@ document.querySelectorAll('.service-link[data-insurance]').forEach(link => {
 
 // Quote form logic
 let currentStep = 1;
+let selectedInsuranceTypes = [];
 const quoteForm = document.getElementById('quoteForm');
 const formNav = document.getElementById('formNav');
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
 const submitBtn = document.getElementById('submitBtn');
-const insuranceCheckboxes = document.querySelectorAll('input[name="insuranceTypes"]');
 const addVehicleBtn = document.getElementById('addVehicleBtn');
 let vehicleCount = 1;
 
-// Handle insurance type selection changes
-insuranceCheckboxes.forEach(checkbox => {
-    checkbox.addEventListener('change', function() {
-        updateConditionalSteps();
+// Handle quote option button clicks
+document.querySelectorAll('.quote-option-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const insuranceType = this.dataset.insurance;
+
+        // Toggle selection
+        if (selectedInsuranceTypes.includes(insuranceType)) {
+            selectedInsuranceTypes = selectedInsuranceTypes.filter(t => t !== insuranceType);
+        } else {
+            selectedInsuranceTypes.push(insuranceType);
+        }
+
+        // Update button appearance
+        updateQuoteOptionButtons();
+
+        // Show form if at least one type is selected
+        if (selectedInsuranceTypes.length > 0) {
+            showQuoteForm();
+            updateSelectedTypesSidebar();
+            updateConditionalSteps();
+        } else {
+            hideQuoteForm();
+        }
     });
 });
 
+// Update quote option button appearance
+function updateQuoteOptionButtons() {
+    document.querySelectorAll('.quote-option-btn').forEach(btn => {
+        const insuranceType = btn.dataset.insurance;
+        if (selectedInsuranceTypes.includes(insuranceType)) {
+            btn.style.borderColor = 'var(--accent-color)';
+            btn.style.backgroundColor = 'rgba(220, 38, 38, 0.1)';
+            btn.style.color = 'var(--accent-color)';
+        } else {
+            btn.style.borderColor = 'var(--border-color)';
+            btn.style.backgroundColor = 'var(--light-bg)';
+            btn.style.color = 'inherit';
+        }
+    });
+}
+
+// Show quote form
+function showQuoteForm() {
+    document.querySelector('.quote-section').style.display = 'none';
+    quoteForm.style.display = 'flex';
+    quoteForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Hide quote form
+function hideQuoteForm() {
+    quoteForm.style.display = 'none';
+    document.querySelector('.quote-section').style.display = 'block';
+}
+
+// Update selected types sidebar
+function updateSelectedTypesSidebar() {
+    const selectedTypesDiv = document.getElementById('selectedTypes');
+    selectedTypesDiv.innerHTML = '';
+
+    const typeLabels = {
+        auto: 'Auto Insurance',
+        home: 'Home Insurance',
+        life: 'Life Insurance',
+        commercial: 'Business Insurance',
+        other: 'All Other Coverage'
+    };
+
+    selectedInsuranceTypes.forEach(type => {
+        const label = document.createElement('div');
+        label.className = 'selected-type-item';
+        label.innerHTML = `
+            <span class="checkmark-selected">✓</span>
+            <span>${typeLabels[type]}</span>
+        `;
+        selectedTypesDiv.appendChild(label);
+    });
+}
+
 // Update which conditional steps are shown based on selected insurance types
 function updateConditionalSteps() {
-    const selectedTypes = Array.from(insuranceCheckboxes)
-        .filter(cb => cb.checked)
-        .map(cb => cb.value);
-
     // Hide all conditional steps
     document.querySelectorAll('.conditional-step').forEach(step => {
         step.style.display = 'none';
     });
 
     // Show selected steps
-    selectedTypes.forEach(type => {
+    selectedInsuranceTypes.forEach(type => {
         const stepId = type === 'auto' ? 'autoStep' :
                       type === 'home' ? 'homeStep' :
                       type === 'life' ? 'lifeStep' :
@@ -206,14 +275,9 @@ if (quoteForm) {
     quoteForm.addEventListener('submit', function(e) {
         e.preventDefault();
 
-        // Get selected insurance types
-        const selectedTypes = Array.from(insuranceCheckboxes)
-            .filter(cb => cb.checked)
-            .map(cb => cb.value);
-
         // Collect all form data
         const formData = {
-            insuranceTypes: selectedTypes,
+            insuranceTypes: selectedInsuranceTypes,
             firstName: document.getElementById('firstName').value,
             lastName: document.getElementById('lastName').value,
             email: document.getElementById('email').value,
@@ -225,7 +289,7 @@ if (quoteForm) {
         };
 
         // Add type-specific data
-        if (selectedTypes.includes('auto')) {
+        if (selectedInsuranceTypes.includes('auto')) {
             const vehicles = [];
             document.querySelectorAll('.vehicle-group').forEach((group, index) => {
                 const vehicleNum = index + 1;
@@ -237,21 +301,21 @@ if (quoteForm) {
             formData.vehicles = vehicles;
         }
 
-        if (selectedTypes.includes('home')) {
+        if (selectedInsuranceTypes.includes('home')) {
             formData.roofAge = document.getElementById('roofAge').value || null;
         }
 
-        if (selectedTypes.includes('life')) {
+        if (selectedInsuranceTypes.includes('life')) {
             formData.genderAtBirth = document.getElementById('genderAtBirth').value || null;
             formData.tobacco = document.getElementById('tobacco').value || null;
             formData.coverageAmount = document.getElementById('coverageAmount').value || null;
         }
 
-        if (selectedTypes.includes('commercial')) {
+        if (selectedInsuranceTypes.includes('commercial')) {
             formData.businessType = document.getElementById('businessType').value || null;
         }
 
-        if (selectedTypes.includes('other')) {
+        if (selectedInsuranceTypes.includes('other')) {
             formData.otherCoverageType = document.getElementById('otherCoverageType').value || null;
         }
 
@@ -273,6 +337,9 @@ if (quoteForm) {
                 currentStep = 1;
                 showStep(1);
                 vehicleCount = 1;
+                selectedInsuranceTypes = [];
+                updateQuoteOptionButtons();
+                hideQuoteForm();
                 document.getElementById('vehiclesList').innerHTML = `
                     <div class="vehicle-group" data-vehicle="1">
                         <h5>Vehicle 1</h5>
