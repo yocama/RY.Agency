@@ -120,14 +120,18 @@ function showStep(step) {
 
 // Update navigation buttons visibility
 function updateNavigation() {
+    const textingConsent = document.getElementById('textingConsent');
+
     if (currentStep === 1) {
         prevBtn.style.display = 'none';
         nextBtn.style.display = 'block';
         submitBtn.style.display = 'none';
+        textingConsent.style.display = 'none';
     } else {
         prevBtn.style.display = 'block';
         submitBtn.style.display = 'block';
         nextBtn.style.display = 'none';
+        textingConsent.style.display = 'block';
     }
 }
 
@@ -216,6 +220,7 @@ if (quoteForm) {
             phone: document.getElementById('phone').value,
             address: document.getElementById('address').value,
             dob: document.getElementById('dob').value,
+            optOutTexts: document.getElementById('optOutTexts').checked,
             timestamp: new Date().toISOString()
         };
 
@@ -292,6 +297,7 @@ if (quoteForm) {
                 'Phone: ' + formData.phone + '\n' +
                 'Address: ' + formData.address + '\n' +
                 'DOB: ' + formData.dob + '\n' +
+                'Opt Out of Texts: ' + (formData.optOutTexts ? 'Yes' : 'No') + '\n' +
                 (formData.vehicles ? 'Vehicles: ' + formData.vehicles.join(', ') + '\n' : '') +
                 (formData.roofAge ? 'Roof Age: ' + formData.roofAge + ' years\n' : '') +
                 (formData.genderAtBirth ? 'Gender: ' + formData.genderAtBirth + '\n' : '') +
