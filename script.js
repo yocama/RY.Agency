@@ -138,6 +138,7 @@ function updateSelectedTypesSidebar() {
         home: 'Home Insurance',
         life: 'Life Insurance',
         commercial: 'Business Insurance',
+        pet: 'Pet Insurance',
         other: 'All Other Coverage'
     };
 
@@ -165,6 +166,7 @@ function updateConditionalSteps() {
                       type === 'home' ? 'homeStep' :
                       type === 'life' ? 'lifeStep' :
                       type === 'commercial' ? 'commercialStep' :
+                      type === 'pet' ? 'petStep' :
                       type === 'other' ? 'otherStep' : null;
 
         if (stepId) {
@@ -321,6 +323,11 @@ if (quoteForm) {
             formData.businessType = document.getElementById('businessType').value || null;
         }
 
+        if (selectedInsuranceTypes.includes('pet')) {
+            formData.petType = document.getElementById('petType').value || null;
+            formData.petAge = document.getElementById('petAge').value || null;
+        }
+
         if (selectedInsuranceTypes.includes('other')) {
             formData.otherCoverageType = document.getElementById('otherCoverageType').value || null;
         }
@@ -377,6 +384,8 @@ if (quoteForm) {
                 (formData.tobacco ? 'Tobacco Use: ' + formData.tobacco + '\n' : '') +
                 (formData.coverageAmount ? 'Coverage Amount: $' + formData.coverageAmount + '\n' : '') +
                 (formData.businessType ? 'Business Type: ' + formData.businessType + '\n' : '') +
+                (formData.petType ? 'Pet Type: ' + formData.petType + '\n' : '') +
+                (formData.petAge ? 'Pet Age: ' + formData.petAge + ' years\n' : '') +
                 (formData.otherCoverageType ? 'Other Coverage: ' + formData.otherCoverageType + '\n' : '')
             );
             window.location.href = 'mailto:Sales@ry.agency?subject=' + subject + '&body=' + body;

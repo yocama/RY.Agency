@@ -225,9 +225,13 @@
                             <span class="option-title">Business Insurance</span>
                             <span class="option-desc">General liability, property, workers' comp</span>
                         </button>
+                        <button type="button" class="quote-option-btn" data-insurance="pet">
+                            <span class="option-title">Pet Insurance</span>
+                            <span class="option-desc">Coverage for your furry family members</span>
+                        </button>
                         <button type="button" class="quote-option-btn" data-insurance="other">
                             <span class="option-title">All Other Coverage</span>
-                            <span class="option-desc">Umbrella, pet, travel, and more</span>
+                            <span class="option-desc">Umbrella, travel, and more</span>
                         </button>
                     </div>
                 </div>
@@ -341,12 +345,25 @@
                                 </div>
                             </div>
 
+                            <!-- Step 5: Pet Insurance Fields -->
+                            <div class="form-step conditional-step" id="petStep" style="display:none;">
+                                <h4>Pet Insurance Details</h4>
+                                <div class="form-group">
+                                    <label for="petType">Type of Pet *</label>
+                                    <input type="text" id="petType" name="petType" placeholder="e.g., Dog, Cat, etc.">
+                                </div>
+                                <div class="form-group">
+                                    <label for="petAge">Pet Age *</label>
+                                    <input type="number" id="petAge" name="petAge" placeholder="Age in years" min="0">
+                                </div>
+                            </div>
+
                             <!-- Step 6: Other Coverage Fields -->
                             <div class="form-step conditional-step" id="otherStep" style="display:none;">
                                 <h4>Other Coverage Details</h4>
                                 <div class="form-group">
                                     <label for="otherCoverageType">Type of Coverage *</label>
-                                    <input type="text" id="otherCoverageType" name="otherCoverageType" placeholder="e.g., Umbrella, Pet, Travel, etc.">
+                                    <input type="text" id="otherCoverageType" name="otherCoverageType" placeholder="e.g., Umbrella, Travel, etc.">
                                 </div>
                             </div>
                         </div>
