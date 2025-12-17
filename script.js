@@ -12,10 +12,94 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Handle conditional form fields based on quote type
-const quoteTypeSelect = document.getElementById('quoteType');
-if (quoteTypeSelect) {
-    quoteTypeSelect.addEventListener('change', function() {
+// Nested form (Russian doll) logic
+let currentStep = 1;
+const totalSteps = 4;
+const quoteForm = document.getElementById('quoteForm');
+const formNav = document.getElementById('formNav');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const submitBtn = document.getElementById('submitBtn');
+
+// Handle insurance type selection
+const insuranceOptions = document.querySelectorAll('input[name="quoteType"]');
+insuranceOptions.forEach(option => {
+    option.addEventListener('change', function() {
+        // Show step 2 when type is selected
+        showStep(2);
+    });
+});
+
+// Show specific step
+function showStep(step) {
+    // Hide all steps
+    document.querySelectorAll('.form-step').forEach(s => {
+        s.style.display = 'none';
+    });
+
+    // Show current step
+    document.getElementById('step' + step).style.display = 'block';
+    currentStep = step;
+
+    // Update navigation buttons
+    updateNavigation();
+}
+
+// Update navigation buttons visibility
+function updateNavigation() {
+    if (currentStep === 1) {
+        formNav.style.display = 'none';
+        submitBtn.style.display = 'none';
+    } else if (currentStep === totalSteps) {
+        formNav.style.display = 'flex';
+        submitBtn.style.display = 'block';
+        nextBtn.style.display = 'none';
+    } else {
+        formNav.style.display = 'flex';
+        submitBtn.style.display = 'none';
+        nextBtn.style.display = 'block';
+    }
+}
+
+// Next button handler
+nextBtn.addEventListener('click', function() {
+    if (validateCurrentStep()) {
+        if (currentStep === 1) {
+            showStep(2);
+        } else if (currentStep === 2) {
+            showStep(3);
+        } else if (currentStep === 3) {
+            showStep(4);
+        }
+    }
+});
+
+// Previous button handler
+prevBtn.addEventListener('click', function() {
+    if (currentStep > 1) {
+        showStep(currentStep - 1);
+    }
+});
+
+// Validate current step
+function validateCurrentStep() {
+    const step = document.getElementById('step' + currentStep);
+    const inputs = step.querySelectorAll('input[required], select[required]');
+
+    for (let input of inputs) {
+        if (!input.value) {
+            alert('Please fill in all required fields');
+            return false;
+        }
+    }
+
+    return true;
+}
+
+// Handle conditional fields based on quote type
+const quoteTypeRadios = document.querySelectorAll('input[name="quoteType"]');
+quoteTypeRadios.forEach(radio => {
+    radio.addEventListener('change', function() {
         // Hide all conditional fields
         document.querySelectorAll('.conditional-fields').forEach(field => {
             field.style.display = 'none';
@@ -35,19 +119,24 @@ if (quoteTypeSelect) {
         } else if (quoteType === 'life') {
             document.getElementById('lifeFields').style.display = 'block';
             document.getElementById('coverageAmount').required = true;
+        } else if (quoteType === 'bundle') {
+            document.getElementById('bundleFields').style.display = 'block';
         }
     });
-}
+})
 
 // Quote form submission handler
-const quoteForm = document.getElementById('quoteForm');
 if (quoteForm) {
     quoteForm.addEventListener('submit', function(e) {
         e.preventDefault();
 
+        // Get selected quote type
+        const selectedType = document.querySelector('input[name="quoteType"]:checked');
+        const quoteType = selectedType ? selectedType.value : '';
+
         // Collect all form data
         const formData = {
-            quoteType: document.getElementById('quoteType').value,
+            quoteType: quoteType,
             fullName: document.getElementById('fullName').value,
             address: document.getElementById('address').value,
             dob: document.getElementById('dob').value,
@@ -56,6 +145,7 @@ if (quoteForm) {
             vehicleInfo: document.getElementById('vehicleInfo').value || null,
             roofAge: document.getElementById('roofAge').value || null,
             coverageAmount: document.getElementById('coverageAmount').value || null,
+            bundleTypes: quoteType === 'bundle' ? Array.from(document.querySelectorAll('input[name="bundleTypes"]:checked')).map(cb => cb.value) : null,
             timestamp: new Date().toISOString()
         };
 
@@ -80,10 +170,8 @@ if (quoteForm) {
             if (response.ok) {
                 alert('Thank you! Your quote request has been submitted. We\'ll contact you within 24 hours.');
                 quoteForm.reset();
-                // Hide conditional fields
-                document.querySelectorAll('.conditional-fields').forEach(field => {
-                    field.style.display = 'none';
-                });
+                currentStep = 1;
+                showStep(1);
             } else {
                 throw new Error('Failed to submit quote');
             }
@@ -101,7 +189,8 @@ if (quoteForm) {
                 'Phone: ' + formData.phone + '\n' +
                 (formData.vehicleInfo ? 'Vehicle: ' + formData.vehicleInfo + '\n' : '') +
                 (formData.roofAge ? 'Roof Age: ' + formData.roofAge + ' years\n' : '') +
-                (formData.coverageAmount ? 'Coverage Amount: $' + formData.coverageAmount + '\n' : '')
+                (formData.coverageAmount ? 'Coverage Amount: $' + formData.coverageAmount + '\n' : '') +
+                (formData.bundleTypes ? 'Bundle Types: ' + formData.bundleTypes.join(', ') + '\n' : '')
             );
             window.location.href = 'mailto:Sales@ry.agency?subject=' + subject + '&body=' + body;
             alert('Quote submitted via email. We\'ll contact you within 24 hours.');

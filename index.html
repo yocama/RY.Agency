@@ -11,7 +11,6 @@
     <nav class="navbar">
         <div class="container">
             <div class="logo">
-                <span class="logo-icon">🛡️</span>
                 <span class="logo-text">Robert Yocom Agency</span>
             </div>
             <ul class="nav-links">
@@ -103,9 +102,9 @@
                     <a href="#contact" class="service-link">Get Quote →</a>
                 </div>
                 <div class="service-card">
-                    <div class="service-icon">🏥</div>
-                    <h3>Health Insurance</h3>
-                    <p>Individual, family, and group health plans. Quality coverage for you and your loved ones.</p>
+                    <div class="service-icon">📋</div>
+                    <h3>All Other Coverage</h3>
+                    <p>Specialty insurance options including umbrella, pet, travel, and more. Comprehensive protection for every need.</p>
                     <a href="#contact" class="service-link">Get Quote →</a>
                 </div>
                 <div class="service-card">
@@ -218,71 +217,133 @@
                 <form class="contact-form" id="quoteForm">
                     <h3>Get Your Free Quote</h3>
 
-                    <!-- Quote Type -->
-                    <div class="form-group">
-                        <label for="quoteType">Type of Quote *</label>
-                        <select id="quoteType" name="quoteType" required>
-                            <option value="">Select insurance type...</option>
-                            <option value="auto">Auto Insurance</option>
-                            <option value="home">Home Insurance</option>
-                            <option value="life">Life Insurance</option>
-                            <option value="commercial">Commercial Insurance</option>
-                            <option value="misc">Other/Multiple</option>
-                        </select>
-                    </div>
-
-                    <!-- Personal Info -->
-                    <div class="form-group">
-                        <label for="fullName">Full Name *</label>
-                        <input type="text" id="fullName" name="fullName" placeholder="John Doe" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="address">Address *</label>
-                        <input type="text" id="address" name="address" placeholder="123 Main St, City, OK 12345" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="dob">Date of Birth *</label>
-                        <input type="date" id="dob" name="dob" required>
-                    </div>
-
-                    <!-- Auto Insurance Fields -->
-                    <div id="autoFields" class="conditional-fields" style="display:none;">
+                    <!-- Step 1: Insurance Type Selection -->
+                    <div class="form-step" id="step1">
                         <div class="form-group">
-                            <label for="vehicleInfo">Vehicle (Year/Make/Model or VIN) *</label>
-                            <input type="text" id="vehicleInfo" name="vehicleInfo" placeholder="2020 Honda Civic or VIN">
+                            <label for="quoteType">What type of insurance do you need? *</label>
+                            <div class="insurance-options">
+                                <label class="insurance-option">
+                                    <input type="radio" name="quoteType" value="auto" required>
+                                    <span class="option-label">🚗 Auto Insurance</span>
+                                </label>
+                                <label class="insurance-option">
+                                    <input type="radio" name="quoteType" value="home" required>
+                                    <span class="option-label">🏠 Home Insurance</span>
+                                </label>
+                                <label class="insurance-option">
+                                    <input type="radio" name="quoteType" value="life" required>
+                                    <span class="option-label">❤️ Life Insurance</span>
+                                </label>
+                                <label class="insurance-option">
+                                    <input type="radio" name="quoteType" value="commercial" required>
+                                    <span class="option-label">💼 Business Insurance</span>
+                                </label>
+                                <label class="insurance-option">
+                                    <input type="radio" name="quoteType" value="bundle" required>
+                                    <span class="option-label">📦 Bundle (Multiple)</span>
+                                </label>
+                                <label class="insurance-option">
+                                    <input type="radio" name="quoteType" value="other" required>
+                                    <span class="option-label">📋 Other Coverage</span>
+                                </label>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Home Insurance Fields -->
-                    <div id="homeFields" class="conditional-fields" style="display:none;">
+                    <!-- Step 2: Personal Info (revealed after type selection) -->
+                    <div class="form-step" id="step2" style="display:none;">
                         <div class="form-group">
-                            <label for="roofAge">Roof Age (years) *</label>
-                            <input type="number" id="roofAge" name="roofAge" placeholder="10" min="0">
+                            <label for="fullName">First & Last Name *</label>
+                            <input type="text" id="fullName" name="fullName" placeholder="John Doe">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="address">Address *</label>
+                            <input type="text" id="address" name="address" placeholder="123 Main St, City, OK 12345">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dob">Date of Birth *</label>
+                            <input type="date" id="dob" name="dob">
                         </div>
                     </div>
 
-                    <!-- Life Insurance Fields -->
-                    <div id="lifeFields" class="conditional-fields" style="display:none;">
-                        <div class="form-group">
-                            <label for="coverageAmount">Desired Coverage Amount ($) *</label>
-                            <input type="number" id="coverageAmount" name="coverageAmount" placeholder="250000" min="0">
+                    <!-- Step 3: Type-Specific Fields -->
+                    <div class="form-step" id="step3" style="display:none;">
+                        <!-- Auto Insurance Fields -->
+                        <div id="autoFields" class="conditional-fields" style="display:none;">
+                            <div class="form-group">
+                                <label for="vehicleInfo">Vehicle (Year/Make/Model or VIN) *</label>
+                                <input type="text" id="vehicleInfo" name="vehicleInfo" placeholder="2020 Honda Civic or VIN">
+                            </div>
+                        </div>
+
+                        <!-- Home Insurance Fields -->
+                        <div id="homeFields" class="conditional-fields" style="display:none;">
+                            <div class="form-group">
+                                <label for="roofAge">Roof Age (years) *</label>
+                                <input type="number" id="roofAge" name="roofAge" placeholder="10" min="0">
+                            </div>
+                        </div>
+
+                        <!-- Life Insurance Fields -->
+                        <div id="lifeFields" class="conditional-fields" style="display:none;">
+                            <div class="form-group">
+                                <label for="coverageAmount">Desired Coverage Amount ($) *</label>
+                                <input type="number" id="coverageAmount" name="coverageAmount" placeholder="250000" min="0">
+                            </div>
+                        </div>
+
+                        <!-- Bundle Fields -->
+                        <div id="bundleFields" class="conditional-fields" style="display:none;">
+                            <div class="form-group">
+                                <label>Which types of coverage are you interested in? (Select all that apply)</label>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="bundleTypes" value="auto">
+                                        <span>Auto</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="bundleTypes" value="home">
+                                        <span>Home</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="bundleTypes" value="life">
+                                        <span>Life</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="bundleTypes" value="commercial">
+                                        <span>Business</span>
+                                    </label>
+                                    <label class="checkbox-option">
+                                        <input type="checkbox" name="bundleTypes" value="other">
+                                        <span>Other</span>
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Contact Info -->
-                    <div class="form-group">
-                        <label for="email">Email *</label>
-                        <input type="email" id="email" name="email" placeholder="john@example.com" required>
+                    <!-- Step 4: Contact Info -->
+                    <div class="form-step" id="step4" style="display:none;">
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" name="email" placeholder="john@example.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Phone *</label>
+                            <input type="tel" id="phone" name="phone" placeholder="(918) 555-0000">
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="phone">Phone *</label>
-                        <input type="tel" id="phone" name="phone" placeholder="(918) 555-0000" required>
+                    <!-- Form Navigation -->
+                    <div class="form-navigation" id="formNav" style="display:none;">
+                        <button type="button" class="nav-button secondary" id="prevBtn">← Back</button>
+                        <button type="button" class="nav-button primary" id="nextBtn">Next →</button>
                     </div>
 
-                    <button type="submit" class="submit-button">Submit Quote Request</button>
+                    <button type="submit" class="submit-button" id="submitBtn" style="display:none;">Submit Quote Request</button>
                     <p class="form-note">We'll contact you within 24 hours with your personalized quote</p>
                 </form>
             </div>
