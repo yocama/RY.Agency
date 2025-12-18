@@ -636,6 +636,30 @@ body {
     box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
 }
 
+/* Google Places Autocomplete - hide error message */
+.pac-container {
+    z-index: 10000;
+}
+
+.pac-container:after {
+    display: none !important;
+}
+
+.pac-container .pac-item-error,
+.pac-container .hdpi:after,
+.pac-logo:after {
+    display: none !important;
+}
+
+/* Hide the "This page can't load Google Maps correctly" message */
+.dismissButton,
+.gm-err-container,
+.gm-err-content,
+.gm-err-message,
+.gm-err-title {
+    display: none !important;
+}
+
 /* Quote Form Container */
 .quote-form-container {
     background-color: var(--white);
