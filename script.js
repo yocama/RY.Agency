@@ -26,7 +26,27 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
+// Google Places Autocomplete for address field
+function initAddressAutocomplete() {
+    const addressInput = document.getElementById('address');
+    if (!addressInput) {
+        // If address field doesn't exist yet, try again when form becomes visible
+        return;
+    }
 
+    const autocomplete = new google.maps.places.Autocomplete(addressInput, {
+        componentRestrictions: { country: 'us' },
+        types: ['address'],
+        fields: ['formatted_address', 'address_components']
+    });
+
+    autocomplete.addListener('place_changed', function() {
+        const place = autocomplete.getPlace();
+        if (place.formatted_address) {
+            addressInput.value = place.formatted_address;
+        }
+    });
+}
 
 // Handle service card "Get Quote" links to scroll to form and select type
 document.addEventListener('DOMContentLoaded', function() {
