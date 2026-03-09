@@ -76,6 +76,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const typeCards = document.querySelectorAll('.quote-type-card');
     const baseInfoSection = document.getElementById('baseInfoSection');
     const additionalSection = document.getElementById('additionalSection');
+    const leadEmailRecipient = 'ryocom@farmersagent.com';
+    const formSubmitEndpoint = 'https://formsubmit.co/ryocom@farmersagent.com';
 
     // Track selected types
     let selectedTypes = new Set();
@@ -223,130 +225,284 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    function collectVehicles() {
+        const vehicles = [];
+
+        for (let i = 1; i <= vehicleCount; i++) {
+            const year = document.querySelector(`input[name="vehicleYear${i}"]`)?.value.trim() || '';
+            const make = document.querySelector(`input[name="vehicleMake${i}"]`)?.value.trim() || '';
+            const model = document.querySelector(`input[name="vehicleModel${i}"]`)?.value.trim() || '';
+            const vin = document.querySelector(`input[name="vehicleVin${i}"]`)?.value.trim() || '';
+
+            if (year || make || model || vin) {
+                vehicles.push({
+                    index: i,
+                    year,
+                    make,
+                    model,
+                    vin
+                });
+            }
+        }
+
+        return vehicles;
+    }
+
+    function collectDrivers() {
+        const drivers = [];
+
+        for (let i = 1; i <= driverCount; i++) {
+            const name = document.querySelector(`input[name="driverName${i}"]`)?.value.trim() || '';
+            const driverDob = document.querySelector(`input[name="driverDob${i}"]`)?.value || '';
+
+            if (name) {
+                drivers.push({
+                    index: i,
+                    name,
+                    dob: driverDob
+                });
+            }
+        }
+
+        return drivers;
+    }
+
+    function collectLeadData() {
+        const selectedInsuranceTypes = Array.from(selectedTypes);
+
+        return {
+            firstName: document.getElementById('firstName').value.trim(),
+            lastName: document.getElementById('lastName').value.trim(),
+            email: document.getElementById('email').value.trim(),
+            phone: document.getElementById('phone').value.trim(),
+            address: document.getElementById('address').value.trim(),
+            dob: document.getElementById('dob').value,
+            selectedTypes: selectedInsuranceTypes,
+            optOutTexts: document.getElementById('optOutTexts').checked,
+            additionalDetails: document.getElementById('additionalDetails').value.trim(),
+            submittedAt: new Date().toISOString(),
+            pageUrl: window.location.href,
+            vehicles: selectedTypes.has('auto') ? collectVehicles() : [],
+            additionalDrivers: selectedTypes.has('auto') ? collectDrivers() : [],
+            roofAge: selectedTypes.has('home') ? (document.getElementById('roofAge')?.value || '') : '',
+            coverageAmount: selectedTypes.has('life') ? (document.getElementById('coverageAmount')?.value || '') : '',
+            tobaccoUse: selectedTypes.has('life') ? (document.querySelector('input[name="tobaccoUse"]:checked')?.value || '') : '',
+            genderAtBirth: selectedTypes.has('life') ? (document.querySelector('input[name="genderAtBirth"]:checked')?.value || '') : '',
+            businessType: selectedTypes.has('commercial') ? (document.getElementById('businessType')?.value.trim() || '') : '',
+            numEmployees: selectedTypes.has('commercial') ? (document.getElementById('numEmployees')?.value || '') : '',
+            petType: selectedTypes.has('pet') ? (document.getElementById('petType')?.value || '') : '',
+            petAge: selectedTypes.has('pet') ? (document.getElementById('petAge')?.value || '') : '',
+            petBreed: selectedTypes.has('pet') ? (document.getElementById('petBreed')?.value.trim() || '') : '',
+            otherCoverageType: selectedTypes.has('other') ? (document.getElementById('otherCoverageType')?.value.trim() || '') : ''
+        };
+    }
+
+    function buildLeadBodyParts(leadData) {
+        const bodyParts = [
+            'QUOTE REQUEST',
+            '=============',
+            '',
+            'CONTACT INFORMATION:',
+            'Name: ' + leadData.firstName + ' ' + leadData.lastName,
+            'Email: ' + leadData.email,
+            'Phone: ' + leadData.phone,
+            'Address: ' + leadData.address,
+            'Date of Birth: ' + leadData.dob,
+            '',
+            'Insurance Types: ' + leadData.selectedTypes.join(', ').toUpperCase()
+        ];
+
+        if (leadData.selectedTypes.includes('auto')) {
+            bodyParts.push('', 'AUTO INSURANCE DETAILS:');
+
+            leadData.vehicles.forEach(vehicle => {
+                if (vehicle.vin) {
+                    bodyParts.push(`Vehicle ${vehicle.index}: VIN - ${vehicle.vin}`);
+                } else {
+                    bodyParts.push(`Vehicle ${vehicle.index}: ${vehicle.year} ${vehicle.make} ${vehicle.model}`.trim());
+                }
+            });
+
+            leadData.additionalDrivers.forEach(driver => {
+                bodyParts.push(`Additional Driver ${driver.index}: ${driver.name} (DOB: ${driver.dob})`);
+            });
+        }
+
+        if (leadData.selectedTypes.includes('home')) {
+            bodyParts.push('', 'HOME INSURANCE DETAILS:');
+            bodyParts.push('Roof Age: ' + leadData.roofAge + ' years');
+        }
+
+        if (leadData.selectedTypes.includes('life')) {
+            bodyParts.push('', 'LIFE INSURANCE DETAILS:');
+            bodyParts.push('Coverage Amount: $' + leadData.coverageAmount);
+            bodyParts.push('Tobacco Use: ' + leadData.tobaccoUse);
+            bodyParts.push('Gender at Birth: ' + leadData.genderAtBirth);
+        }
+
+        if (leadData.selectedTypes.includes('commercial')) {
+            bodyParts.push('', 'BUSINESS INSURANCE DETAILS:');
+            bodyParts.push('Business Type: ' + leadData.businessType);
+            bodyParts.push('Number of Employees: ' + leadData.numEmployees);
+        }
+
+        if (leadData.selectedTypes.includes('pet')) {
+            bodyParts.push('', 'PET INSURANCE DETAILS:');
+            bodyParts.push('Pet Type: ' + leadData.petType);
+            bodyParts.push('Pet Age: ' + leadData.petAge);
+            bodyParts.push('Breed: ' + leadData.petBreed);
+        }
+
+        if (leadData.selectedTypes.includes('other')) {
+            bodyParts.push('', 'OTHER COVERAGE DETAILS:');
+            bodyParts.push('Coverage Type: ' + leadData.otherCoverageType);
+        }
+
+        if (leadData.additionalDetails) {
+            bodyParts.push('', 'ADDITIONAL DETAILS:');
+            bodyParts.push(leadData.additionalDetails);
+        }
+
+        bodyParts.push('', 'Opt Out of Texts: ' + (leadData.optOutTexts ? 'Yes' : 'No'));
+        bodyParts.push('', 'Submitted: ' + leadData.submittedAt);
+
+        return bodyParts;
+    }
+
+    function buildMailtoHref(leadData) {
+        const subject = encodeURIComponent('Quote Request from ' + leadData.firstName + ' ' + leadData.lastName + ' - ' + leadData.selectedTypes.join(', ').toUpperCase());
+        const body = encodeURIComponent(buildLeadBodyParts(leadData).join('\n'));
+
+        return 'mailto:' + leadEmailRecipient + '?subject=' + subject + '&body=' + body;
+    }
+
+    function buildFormSubmitPayload(leadData) {
+        const fullName = (leadData.firstName + ' ' + leadData.lastName).trim();
+        const formattedMessage = buildLeadBodyParts(leadData).join('\n');
+
+        return {
+            _subject: 'Quote Request from ' + fullName + ' - ' + leadData.selectedTypes.join(', ').toUpperCase(),
+            _replyto: leadData.email,
+            _template: 'basic',
+            _url: leadData.pageUrl,
+            _captcha: 'false',
+            _honey: '',
+            name: fullName,
+            email: leadData.email,
+            phone: leadData.phone,
+            message: formattedMessage
+        };
+    }
+
+    function submitLeadToFormSubmit(leadData) {
+        const iframeName = 'formsubmit-hidden-frame';
+        let iframe = document.querySelector(`iframe[name="${iframeName}"]`);
+
+        if (!iframe) {
+            iframe = document.createElement('iframe');
+            iframe.name = iframeName;
+            iframe.title = 'Hidden lead submission frame';
+            iframe.style.display = 'none';
+            document.body.appendChild(iframe);
+        }
+
+        const payload = buildFormSubmitPayload(leadData);
+        const hiddenForm = document.createElement('form');
+        hiddenForm.method = 'POST';
+        hiddenForm.action = formSubmitEndpoint;
+        hiddenForm.target = iframeName;
+        hiddenForm.style.display = 'none';
+
+        Object.entries(payload).forEach(([key, value]) => {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = key;
+            input.value = value;
+            hiddenForm.appendChild(input);
+        });
+
+        document.body.appendChild(hiddenForm);
+        hiddenForm.submit();
+
+        window.setTimeout(() => {
+            hiddenForm.remove();
+        }, 1000);
+    }
+
+    function resetDynamicFormSections() {
+        const vehiclesList = document.getElementById('vehiclesList');
+        const driversList = document.getElementById('driversList');
+        const firstVehicleYmmButton = document.querySelector('.toggle-btn[data-vehicle="1"][data-input="ymm"]');
+        const firstVehicleVinButton = document.querySelector('.toggle-btn[data-vehicle="1"][data-input="vin"]');
+        const firstVehicleYmmInputs = document.querySelector('.ymm-inputs[data-vehicle="1"]');
+        const firstVehicleVinInput = document.querySelector('.vin-input[data-vehicle="1"]');
+
+        vehiclesList?.querySelectorAll('.vehicle-entry').forEach((entry, index) => {
+            if (index > 0) {
+                entry.remove();
+            }
+        });
+
+        driversList?.querySelectorAll('.driver-entry').forEach((entry, index) => {
+            if (index > 0) {
+                entry.remove();
+            }
+        });
+
+        if (firstVehicleYmmButton && firstVehicleVinButton && firstVehicleYmmInputs && firstVehicleVinInput) {
+            firstVehicleYmmButton.classList.add('active');
+            firstVehicleVinButton.classList.remove('active');
+            firstVehicleYmmInputs.style.display = 'block';
+            firstVehicleVinInput.style.display = 'none';
+        }
+
+        vehicleCount = 1;
+        driverCount = 1;
+    }
+
     // Form submission
     if (quoteForm) {
-        quoteForm.addEventListener('submit', function(e) {
+        quoteForm.addEventListener('submit', async function(e) {
             e.preventDefault();
+
+            if (!quoteForm.reportValidity()) {
+                return;
+            }
 
             if (selectedTypes.size === 0) {
                 alert('Please select at least one insurance type');
                 return;
             }
 
-            // Get form data
-            const firstName = document.getElementById('firstName').value;
-            const lastName = document.getElementById('lastName').value;
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
-            const address = document.getElementById('address').value;
-            const dob = document.getElementById('dob').value;
-            const optOutTexts = document.getElementById('optOutTexts').checked;
-            const additionalDetails = document.getElementById('additionalDetails').value;
+            const leadData = collectLeadData();
+            const submitButton = quoteForm.querySelector('.submit-button');
+            const originalButtonText = submitButton ? submitButton.textContent : '';
 
-            // Build email body
-            let bodyParts = [
-                'QUOTE REQUEST',
-                '=============',
-                '',
-                'CONTACT INFORMATION:',
-                'Name: ' + firstName + ' ' + lastName,
-                'Email: ' + email,
-                'Phone: ' + phone,
-                'Address: ' + address,
-                'Date of Birth: ' + dob,
-                '',
-                'Insurance Types: ' + Array.from(selectedTypes).join(', ').toUpperCase()
-            ];
+            if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.textContent = 'Sending...';
+            }
 
-            // Add type-specific details
-            if (selectedTypes.has('auto')) {
-                bodyParts.push('', 'AUTO INSURANCE DETAILS:');
-                for (let i = 1; i <= vehicleCount; i++) {
-                    const year = document.querySelector(`input[name="vehicleYear${i}"]`)?.value || '';
-                    const make = document.querySelector(`input[name="vehicleMake${i}"]`)?.value || '';
-                    const model = document.querySelector(`input[name="vehicleModel${i}"]`)?.value || '';
-                    const vin = document.querySelector(`input[name="vehicleVin${i}"]`)?.value || '';
-                    if (year || make || model || vin) {
-                        if (vin) {
-                            bodyParts.push(`Vehicle ${i}: VIN - ${vin}`);
-                        } else {
-                            bodyParts.push(`Vehicle ${i}: ${year} ${make} ${model}`);
-                        }
-                    }
-                }
-                for (let i = 1; i <= driverCount; i++) {
-                    const name = document.querySelector(`input[name="driverName${i}"]`)?.value || '';
-                    const driverDob = document.querySelector(`input[name="driverDob${i}"]`)?.value || '';
-                    if (name) {
-                        bodyParts.push(`Additional Driver ${i}: ${name} (DOB: ${driverDob})`);
-                    }
+            try {
+                submitLeadToFormSubmit(leadData);
+
+                alert('Thank you! Your quote request has been submitted. We\'ll contact you within 24 hours.');
+
+                quoteForm.reset();
+                selectedTypes.clear();
+                typeCards.forEach(card => card.classList.remove('active'));
+                updateFormVisibility();
+                resetDynamicFormSections();
+            } catch (error) {
+                console.error('Lead submission failed:', error);
+                window.location.href = buildMailtoHref(leadData);
+                alert('We could not submit your quote automatically, so your email app has been opened with your request details.');
+            } finally {
+                if (submitButton) {
+                    submitButton.disabled = false;
+                    submitButton.textContent = originalButtonText;
                 }
             }
-
-            if (selectedTypes.has('home')) {
-                const roofAge = document.getElementById('roofAge')?.value || '';
-                bodyParts.push('', 'HOME INSURANCE DETAILS:');
-                bodyParts.push('Roof Age: ' + roofAge + ' years');
-            }
-
-            if (selectedTypes.has('life')) {
-                const coverage = document.getElementById('coverageAmount')?.value || '';
-                const tobacco = document.querySelector('input[name="tobaccoUse"]:checked')?.value || '';
-                const gender = document.querySelector('input[name="genderAtBirth"]:checked')?.value || '';
-                bodyParts.push('', 'LIFE INSURANCE DETAILS:');
-                bodyParts.push('Coverage Amount: $' + coverage);
-                bodyParts.push('Tobacco Use: ' + tobacco);
-                bodyParts.push('Gender at Birth: ' + gender);
-            }
-
-            if (selectedTypes.has('commercial')) {
-                const businessType = document.getElementById('businessType')?.value || '';
-                const numEmployees = document.getElementById('numEmployees')?.value || '';
-                bodyParts.push('', 'BUSINESS INSURANCE DETAILS:');
-                bodyParts.push('Business Type: ' + businessType);
-                bodyParts.push('Number of Employees: ' + numEmployees);
-            }
-
-            if (selectedTypes.has('pet')) {
-                const petType = document.getElementById('petType')?.value || '';
-                const petAge = document.getElementById('petAge')?.value || '';
-                const petBreed = document.getElementById('petBreed')?.value || '';
-                bodyParts.push('', 'PET INSURANCE DETAILS:');
-                bodyParts.push('Pet Type: ' + petType);
-                bodyParts.push('Pet Age: ' + petAge);
-                bodyParts.push('Breed: ' + petBreed);
-            }
-
-            if (selectedTypes.has('other')) {
-                const otherType = document.getElementById('otherCoverageType')?.value || '';
-                bodyParts.push('', 'OTHER COVERAGE DETAILS:');
-                bodyParts.push('Coverage Type: ' + otherType);
-            }
-
-            if (additionalDetails) {
-                bodyParts.push('', 'ADDITIONAL DETAILS:');
-                bodyParts.push(additionalDetails);
-            }
-
-            bodyParts.push('', 'Opt Out of Texts: ' + (optOutTexts ? 'Yes' : 'No'));
-            bodyParts.push('', 'Submitted: ' + new Date().toLocaleString());
-
-            const subject = encodeURIComponent('Quote Request from ' + firstName + ' ' + lastName + ' - ' + Array.from(selectedTypes).join(', ').toUpperCase());
-            const body = encodeURIComponent(bodyParts.join('\n'));
-
-            // Send email
-            window.location.href = 'mailto:Sales@ry.agency?subject=' + subject + '&body=' + body;
-
-            // Show confirmation
-            alert('Thank you! Your quote request has been submitted. We\'ll contact you within 24 hours.');
-
-            // Reset form
-            quoteForm.reset();
-            selectedTypes.clear();
-            typeCards.forEach(card => card.classList.remove('active'));
-            updateFormVisibility();
-            vehicleCount = 1;
-            driverCount = 1;
         });
     }
 });
@@ -392,4 +548,3 @@ document.querySelectorAll('.nav-links a').forEach(link => {
         }
     });
 });
-
