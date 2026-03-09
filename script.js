@@ -369,13 +369,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return bodyParts;
     }
 
-    function buildMailtoHref(leadData) {
-        const subject = encodeURIComponent('Quote Request from ' + leadData.firstName + ' ' + leadData.lastName + ' - ' + leadData.selectedTypes.join(', ').toUpperCase());
-        const body = encodeURIComponent(buildLeadBodyParts(leadData).join('\n'));
-
-        return 'mailto:' + leadEmailRecipient + '?subject=' + subject + '&body=' + body;
-    }
-
     function buildFormSubmitPayload(leadData) {
         const fullName = (leadData.firstName + ' ' + leadData.lastName).trim();
         const formattedMessage = buildLeadBodyParts(leadData).join('\n');
@@ -462,7 +455,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Form submission
     if (quoteForm) {
-        quoteForm.addEventListener('submit', async function(e) {
+        quoteForm.addEventListener('submit', function(e) {
             e.preventDefault();
 
             if (!quoteForm.reportValidity()) {
@@ -485,23 +478,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
             try {
                 submitLeadToFormSubmit(leadData);
-
-                alert('Thank you! Your quote request has been submitted. We\'ll contact you within 24 hours.');
-
-                quoteForm.reset();
-                selectedTypes.clear();
-                typeCards.forEach(card => card.classList.remove('active'));
-                updateFormVisibility();
-                resetDynamicFormSections();
             } catch (error) {
                 console.error('Lead submission failed:', error);
-                window.location.href = buildMailtoHref(leadData);
-                alert('We could not submit your quote automatically, so your email app has been opened with your request details.');
-            } finally {
                 if (submitButton) {
                     submitButton.disabled = false;
                     submitButton.textContent = originalButtonText;
                 }
+                alert('We could not submit your quote automatically. Please call 918-600-2022 or email ' + leadEmailRecipient + '.');
+                return;
+            }
+
+            alert('Thank you! Your quote request has been submitted. We\'ll contact you within 24 hours.');
+
+            quoteForm.reset();
+            selectedTypes.clear();
+            typeCards.forEach(card => card.classList.remove('active'));
+            updateFormVisibility();
+            resetDynamicFormSections();
+
+            if (submitButton) {
+                submitButton.disabled = false;
+                submitButton.textContent = originalButtonText;
             }
         });
     }
