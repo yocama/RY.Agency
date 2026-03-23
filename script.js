@@ -530,18 +530,51 @@ document.querySelectorAll('.service-card, .why-card, .testimonial-card, .feature
 // Mobile menu toggle
 const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
 const navLinks = document.querySelector('.nav-links');
+const navbar = document.querySelector('.navbar');
+const mobileNavBreakpoint = 768;
 
-if (mobileMenuToggle) {
-    mobileMenuToggle.addEventListener('click', function() {
-        navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
-    });
+function setMobileMenuState(isOpen) {
+    if (!mobileMenuToggle || !navbar) {
+        return;
+    }
+
+    navbar.classList.toggle('menu-open', isOpen);
+    mobileMenuToggle.setAttribute('aria-expanded', String(isOpen));
+    mobileMenuToggle.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
 }
 
-// Close mobile menu when link is clicked
-document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', function() {
-        if (navLinks.style.display === 'flex') {
-            navLinks.style.display = 'none';
+if (mobileMenuToggle && navLinks && navbar) {
+    mobileMenuToggle.addEventListener('click', function() {
+        setMobileMenuState(!navbar.classList.contains('menu-open'));
+    });
+
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', function() {
+            if (window.innerWidth <= mobileNavBreakpoint) {
+                setMobileMenuState(false);
+            }
+        });
+    });
+
+    window.addEventListener('resize', function() {
+        if (window.innerWidth > mobileNavBreakpoint) {
+            setMobileMenuState(false);
         }
     });
-});
+
+    document.addEventListener('click', function(event) {
+        if (window.innerWidth > mobileNavBreakpoint || !navbar.classList.contains('menu-open')) {
+            return;
+        }
+
+        if (!navbar.contains(event.target)) {
+            setMobileMenuState(false);
+        }
+    });
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            setMobileMenuState(false);
+        }
+    });
+}
