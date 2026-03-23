@@ -1,15 +1,46 @@
-// Testimonials auto-scroll - duplicate cards for seamless loop
+// Desktop keeps the looping marquee, mobile switches to swipeable cards.
 document.addEventListener('DOMContentLoaded', function() {
     const track = document.getElementById('testimonialsTrack');
-    if (!track) return;
+    const scrollContainer = document.querySelector('.testimonials-scroll-container');
+    if (!track || !scrollContainer) return;
 
-    const cards = Array.from(track.querySelectorAll('.testimonial-card'));
+    const mobileTestimonialsQuery = window.matchMedia('(max-width: 768px)');
+    const originalCards = Array.from(track.querySelectorAll('.testimonial-card')).map(card => card.cloneNode(true));
 
-    // Duplicate all cards to create seamless loop
-    cards.forEach(card => {
-        const clone = card.cloneNode(true);
-        track.appendChild(clone);
-    });
+    function renderTestimonials(cards) {
+        track.replaceChildren(...cards.map(card => card.cloneNode(true)));
+    }
+
+    function setTestimonialsMode(isMobile) {
+        renderTestimonials(originalCards);
+        scrollContainer.scrollLeft = 0;
+
+        if (isMobile) {
+            track.dataset.mode = 'swipe';
+            return;
+        }
+
+        const desktopCards = Array.from(track.querySelectorAll('.testimonial-card'));
+        desktopCards.forEach(card => {
+            const clone = card.cloneNode(true);
+            clone.dataset.clone = 'true';
+            clone.setAttribute('aria-hidden', 'true');
+            track.appendChild(clone);
+        });
+        track.dataset.mode = 'marquee';
+    }
+
+    function handleTestimonialsModeChange(event) {
+        setTestimonialsMode(event.matches);
+    }
+
+    setTestimonialsMode(mobileTestimonialsQuery.matches);
+
+    if (typeof mobileTestimonialsQuery.addEventListener === 'function') {
+        mobileTestimonialsQuery.addEventListener('change', handleTestimonialsModeChange);
+    } else {
+        mobileTestimonialsQuery.addListener(handleTestimonialsModeChange);
+    }
 });
 
 // Smooth scrolling for navigation links
