@@ -5,10 +5,18 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!track || !scrollContainer) return;
 
     const mobileTestimonialsQuery = window.matchMedia('(max-width: 768px)');
-    const originalCards = Array.from(track.querySelectorAll('.testimonial-card')).map(card => card.cloneNode(true));
+    function cloneTestimonialCard(card) {
+        const clone = card.cloneNode(true);
+        clone.style.removeProperty('opacity');
+        clone.style.removeProperty('transform');
+        clone.style.removeProperty('transition');
+        return clone;
+    }
+
+    const originalCards = Array.from(track.querySelectorAll('.testimonial-card')).map(cloneTestimonialCard);
 
     function renderTestimonials(cards) {
-        track.replaceChildren(...cards.map(card => card.cloneNode(true)));
+        track.replaceChildren(...cards.map(cloneTestimonialCard));
     }
 
     function setTestimonialsMode(isMobile) {
@@ -22,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const desktopCards = Array.from(track.querySelectorAll('.testimonial-card'));
         desktopCards.forEach(card => {
-            const clone = card.cloneNode(true);
+            const clone = cloneTestimonialCard(card);
             clone.dataset.clone = 'true';
             clone.setAttribute('aria-hidden', 'true');
             track.appendChild(clone);
@@ -550,8 +558,8 @@ const observer = new IntersectionObserver(function(entries) {
     });
 }, observerOptions);
 
-// Observe all animated elements
-document.querySelectorAll('.service-card, .why-card, .testimonial-card, .feature').forEach(card => {
+// Observe all animated elements except testimonials, which are re-rendered for marquee/swipe behavior.
+document.querySelectorAll('.service-card, .why-card, .feature').forEach(card => {
     card.style.opacity = '0';
     card.style.transform = 'translateY(20px)';
     card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
