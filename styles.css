@@ -476,8 +476,9 @@ body {
 .testimonials-track {
     display: flex;
     gap: 2rem;
-    animation: scroll-left 30s linear infinite;
+    animation: scroll-left var(--testimonial-marquee-duration, 30s) linear infinite;
     padding: 1rem 0;
+    will-change: transform;
 }
 
 @keyframes scroll-left {
@@ -485,7 +486,7 @@ body {
         transform: translateX(0);
     }
     100% {
-        transform: translateX(-50%);
+        transform: translateX(calc(-1 * var(--testimonial-loop-distance, 50%)));
     }
 }
 

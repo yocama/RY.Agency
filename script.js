@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!track || !scrollContainer) return;
 
     const mobileTestimonialsQuery = window.matchMedia('(max-width: 768px)');
+    let resizeFrame = null;
+
     function cloneTestimonialCard(card) {
         const clone = card.cloneNode(true);
         clone.style.removeProperty('opacity');
@@ -19,11 +21,28 @@ document.addEventListener('DOMContentLoaded', function() {
         track.replaceChildren(...cards.map(cloneTestimonialCard));
     }
 
+    function updateMarqueeMetrics() {
+        const firstCard = track.querySelector('.testimonial-card');
+        const firstClone = track.querySelector('.testimonial-card[data-clone="true"]');
+        if (!firstCard || !firstClone) return;
+
+        const loopDistance = firstClone.offsetLeft - firstCard.offsetLeft;
+        if (loopDistance <= 0) return;
+
+        const secondsPerPixel = 1 / 70;
+        const durationSeconds = Math.max(30, Math.round(loopDistance * secondsPerPixel));
+
+        track.style.setProperty('--testimonial-loop-distance', `${loopDistance}px`);
+        track.style.setProperty('--testimonial-marquee-duration', `${durationSeconds}s`);
+    }
+
     function setTestimonialsMode(isMobile) {
         renderTestimonials(originalCards);
         scrollContainer.scrollLeft = 0;
 
         if (isMobile) {
+            track.style.removeProperty('--testimonial-loop-distance');
+            track.style.removeProperty('--testimonial-marquee-duration');
             track.dataset.mode = 'swipe';
             return;
         }
@@ -35,6 +54,8 @@ document.addEventListener('DOMContentLoaded', function() {
             clone.setAttribute('aria-hidden', 'true');
             track.appendChild(clone);
         });
+
+        updateMarqueeMetrics();
         track.dataset.mode = 'marquee';
     }
 
@@ -49,6 +70,16 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
         mobileTestimonialsQuery.addListener(handleTestimonialsModeChange);
     }
+
+    window.addEventListener('resize', function() {
+        if (resizeFrame !== null) {
+            window.cancelAnimationFrame(resizeFrame);
+        }
+
+        resizeFrame = window.requestAnimationFrame(function() {
+            setTestimonialsMode(mobileTestimonialsQuery.matches);
+        });
+    });
 });
 
 // Smooth scrolling for navigation links
