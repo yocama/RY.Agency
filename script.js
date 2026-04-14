@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!track || !scrollContainer) return;
 
     const mobileTestimonialsQuery = window.matchMedia('(max-width: 768px)');
+    const minimumDesktopCards = 10;
+
     function cloneTestimonialCard(card) {
         const clone = card.cloneNode(true);
         clone.style.removeProperty('opacity');
@@ -19,14 +21,33 @@ document.addEventListener('DOMContentLoaded', function() {
         track.replaceChildren(...cards.map(cloneTestimonialCard));
     }
 
+    function buildDesktopMarqueeCards() {
+        const marqueeCards = [];
+        const targetCount = Math.max(originalCards.length, minimumDesktopCards);
+
+        while (marqueeCards.length < targetCount) {
+            originalCards.forEach(card => {
+                if (marqueeCards.length < targetCount) {
+                    marqueeCards.push(card);
+                }
+            });
+        }
+
+        return marqueeCards;
+    }
+
     function setTestimonialsMode(isMobile) {
-        renderTestimonials(originalCards);
         scrollContainer.scrollLeft = 0;
 
         if (isMobile) {
+            renderTestimonials(originalCards);
+            track.style.removeProperty('--testimonial-marquee-duration');
             track.dataset.mode = 'swipe';
             return;
         }
+
+        const marqueeCards = buildDesktopMarqueeCards();
+        renderTestimonials(marqueeCards);
 
         const desktopCards = Array.from(track.querySelectorAll('.testimonial-card'));
         desktopCards.forEach(card => {
@@ -35,6 +56,9 @@ document.addEventListener('DOMContentLoaded', function() {
             clone.setAttribute('aria-hidden', 'true');
             track.appendChild(clone);
         });
+
+        const durationSeconds = Math.max(40, marqueeCards.length * 6);
+        track.style.setProperty('--testimonial-marquee-duration', `${durationSeconds}s`);
         track.dataset.mode = 'marquee';
     }
 
